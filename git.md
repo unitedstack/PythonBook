@@ -14,7 +14,7 @@ $ sudo apt-get install git
 # 操作
 
 ## 创建版本库
-版本库又名仓库，英文名repository,你可以简单的理解一个目录，这个目录里面的所有文件都可以被Git管理起来，每个文件的修改，删除，Git都能跟踪，以便任何时刻都可以追踪历史，或者在将来某个时刻还可以将文件”还原”。
+版本库又名仓库，英文名repository，你可以简单的理解一个目录，这个目录里面的所有文件都可以被Git管理起来，每个文件的修改，删除，Git都能跟踪，以便任何时刻都可以追踪历史，或者在将来某个时刻还可以将文件”还原”。
 创建版本库的操作非常简单，新建一个空文件夹，并在该目录下执行git init命令就可以将该目录变成git可管理的仓库。
 ```shell
 $ mkdir newrepo
@@ -117,8 +117,56 @@ To https://github.com/huangmu1987/remoterepo.git
  * [new branch]      master -> master
 Branch master set up to track remote branch master from origin.
 ```
+而常见的使用过程中，远程库通常是先于本地库而存在的，那么我们则需要从远程库克隆一个本地库，可以通过git clone完成相应的工作，假设我们已存在一个remotefirst的远程库。
+```shell
+$ git clone https://github.com/username/remotefirst.git
+Cloning into 'remotefirst'...
+remote: Counting objects: 3, done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+```
 
 ## 分支管理
-
+在Git中，除了主分支即master分支外，可以通过相应的命令创建其他的分支，常见命令如下：
+```shell
+$ git checkout -b dev    # -b参数表示创建并切换，可以理解为是git branch dev与git checkout dev两条命令的集合
+Switched to a new branch 'dev'
+$ git branch
+* dev
+  master
+$ echo "add for dev branch" >> README.md
+$ git add README.md
+$ git commit -m "add for dev branch"
+[dev 6844da0] add for dev branch
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+```
+对分支的修改不会影响master分支中的内容：
+```shell
+$ git checkout master
+Switched to branch 'master'
+$ cat README.md
+# remotefirst
+```
+通过命令可以将分支的内容merge回master分支中：
+```shell
+$ git merge dev
+Updating 379a420..6844da0
+Fast-forward
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+$ git branch
+* master
+dev
+$ cat README.md
+# remotefirst
+add for dev branch
+```
+当分支的内容已经merge回master中后，就可以将分支删除：
+```shell
+$ git branch -d dev
+Deleted branch dev (was 6844da0).
+$ git branch
+* master
+```
 
 ## 标签管理
