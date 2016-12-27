@@ -16,8 +16,6 @@ demo_session1/
 └── paste_deploy.py
 ```
 
-### 书写配置文件
-
 首先是，我们需要一个定义我们API的配置文件:
 
 ### config.ini
@@ -51,6 +49,44 @@ paste.app_factory = paste_deploy:SayHello.factor
 这里面默认找的Python模块就是paste\_deploy.SayHello下面的factor函数。
 
 ### paste\_deploy.py
+
+我们现在来看看paste\_deploy.py的主程序：
+
+```
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
+from paste.deploy import loadapp
+from wsgiref.simple_server import make_server
+import os
+import sys
+import webob
+
+
+class SayHello(object):
+    def __init__(self, version):
+        self.version = version
+
+    def __call__(self, environ, start_response):
+        res = webob.Response("Hello World!")
+        res.status = '200 OK'
+        return res(environ, start_response)
+
+    @classmethod
+    def factory(cls, global_conf, **kwargs):
+        print '1.0'
+        return SayHello(kwargs['version'])
+
+
+if __name__ == "__main__":
+    path = os.path.abspath('.') + '/'
+    config_name = 'config.ini'
+    config_path = path + config_name
+    sys.path.append(path)
+    app = loadapp('config:%s' % config_path)
+    server = make_server('localhost', 9000, app)
+    server.serve_forever()
+```
 
 
 
