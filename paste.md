@@ -148,14 +148,12 @@ pipeline = filter_log showversion # 就会按照这个顺序去调用你定义�
 paste.filter_factory = manage:LogFilter.factory
 
 [app:apiv1app]
-paste.app_factory = v1.router:MyRouterApp.factory
+paste.app_factory = v1.router:MyRouterApp.factory # 这个是你v1版本的路由函数
 
 [app:showversion]
 version = 1.0.0
 paste.app_factory = manage:ShowVersion.factory
 ```
-
-
 
 ### manage.py
 
