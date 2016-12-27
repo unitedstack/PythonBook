@@ -62,7 +62,7 @@ no changes added to commit (use "git add" and/or "git commit -a")
 此时则可以通过git diff来显示未提交的内容。
 
 ## 版本回退
-当我们对文件进行了多次修改后，可以通过git log显示修改记录,我们可以看到最近的三次提交：
+当我们对文件进行了多次修改后，可以通过git log显示修改记录，我们可以看到最近的三次提交：
 ```shell
 $ git log
 commit b7323c15962b16266e581893b32936a2af5a77e2
@@ -77,12 +77,12 @@ commit a46b3bac345837f1632e48b2cdec30a6ecdd4e12
 
     add readme
 ```
-如果我们希望将文件回退到之前的版本的时候,则可以使用git reset命令
+如果我们希望将文件回退到之前的版本的时候，则可以使用git reset命令
 ```shell
 $ git reset --hard HEAD^    #HEAD^表示回退到上一版本,HEAD^^则表示上两个版本,以此类推
 HEAD is now at 4a8bfa9 modify
 ```
-如果我们希望将文件回退到之前的最新版本,但现在已经无法通过git log显示相应的内容,则可以通过git reflog查看相应版本号
+如果我们希望将文件回退到之前的最新版本，但现在已经无法通过git log显示相应的内容，则可以通过git reflog查看相应版本号
 ```shell
 $ git reflog
 4a8bfa9 HEAD@{0}: reset: moving to HEAD^
@@ -94,9 +94,29 @@ HEAD is now at b7323c1 modify2
 ```
 
 ## 管理修改
-
+当我们在工作过程中发现当前的修改内容有误，则可以通过git checkout丢弃掉当前的修改内容
+```shell
+$ git checkout -- readme.txt
+```
 
 ## 远程仓库
+通常与远程仓库的通信过程是通过ssh加密的，所以需要我们将公钥上传到相应的远程仓库服务器上。以GitHub为例，登录后在右上角的settings中可以将我们本地服务器私钥对应的公钥进行导入。
+之后我们就可以为我们的本地仓库创建对应的远程仓库，以GitHub为例，登录后在右上角找到“create a new repo”，在repo name中填入希望对该仓库的命名，则成功的在GitHub上创建了一个仓库。
+之后我们则可以通过git remote add命令将本地仓库与远程仓库进行关联，通过git push将本地仓库内容进行推送。
+```shell
+$ git remote add origin https://github.com/username/remoterepo.git
+$ git push -u origin master    # -u参数的使用可以将本地的master分支和远程master分支进行关联，之后的操作就可以省略掉origin master参数
+Username for 'https://github.com': username
+Password for 'https://username@github.com': 
+Counting objects: 9, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (9/9), 652 bytes | 0 bytes/s, done.
+Total 9 (delta 0), reused 0 (delta 0)
+To https://github.com/huangmu1987/remoterepo.git
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.
+```
 
 ## 分支管理
 
