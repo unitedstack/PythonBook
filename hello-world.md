@@ -50,7 +50,7 @@ print "你好，世界";
 以上程序执行输出结果为：
 
 ```
- File "test.py", line 2
+File "test.py", line 2
 SyntaxError: Non-ASCII character '\xe4' in file test.py on line 2, but no encoding declared; see http://www.python.org/peps/pep-0263.html for details
 ```
 
@@ -61,7 +61,7 @@ Python中默认的编码格式是 ASCII 格式，在没修改编码格式时无�
 ```
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
- 
+
 print "你好，世界";
 ```
 
