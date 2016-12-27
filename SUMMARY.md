@@ -18,9 +18,6 @@
         * [sqlalchemy](sqlalchemy.md)
         * [alembic](alembic.md)
     * [单元测试模块](单元测试模块.md)
-        * mox\/mock
-        * pep8静态编译测试
-        * tox\/testr
     * [Oslo库使用](oslo库使用.md)
         * oslo.config
         * oslo.messaging
