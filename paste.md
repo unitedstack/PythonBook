@@ -155,6 +155,8 @@ version = 1.0.0
 paste.app_factory = manage:ShowVersion.factory
 ```
 
+设计这个V1版的API其实理念很简单，访问/v1的时候会去找app:apiv1app这个模块，这个模块的工厂函数又指向了v1.router.MyRouterApp.factory这个工厂函数。
+
 ### manage.py
 
 ```
