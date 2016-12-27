@@ -2,11 +2,12 @@
 
 * [Python基础](README.md)
     * [Hello World](Python_Basic.md)
-    * [方法/对象](Python_Basic.md)
-    * [线程/进程控制](Python_Basic.md)
+    * [方法\/对象](Python_Basic.md)
+    * [线程\/进程控制](Python_Basic.md)
     * [Socket套接字](Python_Basic.md)
     * [迭代器](Python_Basic.md)
     * [装饰器](Python_Basic.md)
+    * [Hello World](hello-world.md)
 * [开发辅助工具](README.md)
     * [pip](Python_Basic.md)
     * [ipython](Python_Basic.md)
@@ -25,4 +26,5 @@
     * [stevedore](Python_Basic.md)
     * [OpenStack SDK开发](Python_Basic.md)
     * [虚拟Python环境](Python_Basic.md)
-* [Django模块开发]
+* \[Django模块开发\]
+
