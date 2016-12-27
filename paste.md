@@ -267,8 +267,8 @@ class MyRouterApp(wsgi.Router):
         mapper.connect(
             '/test',
             controller=wsgi.Resource(controller), # 注册这个类
-            action='test', # 定义了这个类的test
-            conditions={'method':['GET']}
+            action='test', # 定义了这个类下面的test这个方法
+            conditions={'method':['GET']} # 匹配了哪一个HTTP的方法
         )
         super(MyRouterApp, self).__init__(mapper)
 ```
