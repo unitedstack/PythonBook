@@ -85,5 +85,24 @@ Date:
 ```
 如果我们希望将文件回退到之前的版本的时候,则可以使用git reset命令
 ```shell
-
+$ git reset --hard HEAD^    #HEAD^表示回退到上一版本,HEAD^^则表示上两个版本,以此类推
+HEAD is now at 4a8bfa9 modify
 ```
+如果我们希望将文件回退到之前的最新版本,但现在已经无法通过git log显示相应的内容,则可以通过git reflog查看相应版本号
+```shell
+$ git reflog
+4a8bfa9 HEAD@{0}: reset: moving to HEAD^
+b7323c1 HEAD@{1}: commit: modify2
+4a8bfa9 HEAD@{2}: commit: modify
+a46b3ba HEAD@{3}: commit (initial): add readme
+$ git reset --hard b7323c1
+HEAD is now at b7323c1 modify2
+```
+
+## 管理修改
+
+## 远程仓库
+
+## 分支管理
+
+## 标签管理
