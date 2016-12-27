@@ -149,6 +149,8 @@ class API(wsgi.Router):
 
 我们定义了，访问 /stacks这个URL的时候，就会去调用stacks这个对象下面的index方法。
 
+
+
 ## Paste小程序
 
 ### 建立项目
