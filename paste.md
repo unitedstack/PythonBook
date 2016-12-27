@@ -137,11 +137,11 @@ demo_session2/
 [composite:common]
 use = egg:Paste#urlmap
 /: showversion
-/log: showversion_log
+/log: showversion_log # 这个访问了下面的pipeline
 /v1: apiv1app # 这个就是你v1版本的API的主入口
 
 [pipeline:showversion_log]
-pipeline = filter_log showversion
+pipeline = filter_log showversion # 就会按照这个顺序去调用你定义的app
 
 [filter:filter_log]
 #filter2 deal with time,read args belowmanage
@@ -155,14 +155,7 @@ version = 1.0.0
 paste.app_factory = manage:ShowVersion.factory
 ```
 
-这边使用了pipeline的属性，在访问/log 的就会去寻找showversion\_log这个pipeline，pipeline里面定义了：
 
-```
-[pipeline:showversion_log]
-pipeline = filter_log showversion
-```
-
-就会按照filter\_log再到showversion这个流程去调用app.
 
 ### manage.py
 
