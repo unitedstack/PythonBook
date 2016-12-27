@@ -1,4 +1,4 @@
-# Pecan
+# Pecan框架
 
 ---
 
@@ -9,4 +9,26 @@
 * 请求路由很容易就可以实现了
 
 总的来说，用上Pecan框架以后，很多重复的代码不用写了，开发人员可以专注于业务，也就是实现每个API的功能。
+
+先来看看Pecan项目的目录结构：
+
+```
+# cd pecan_demo
+# tree  .
+.
+├── app.py
+├── controllers
+│   ├── __init__.py
+│   ├── root.py
+│   └── v1
+│       ├── base.py
+│       ├── __init__.py
+│       ├── root.py
+│       ├── server.py
+│       ├── test.py
+│       └── user.py
+├── expose.py
+```
+
+
 
