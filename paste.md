@@ -161,9 +161,9 @@ paste.app_factory = manage:ShowVersion.factory
 
 ```
 ''''' 
-Created on 2013-6-2 
+Created on 2016-12-27
 
-@author: spch2008 
+@author: zhaozhilong
 '''  
 
 from wsgiref.simple_server import make_server
@@ -220,6 +220,245 @@ if __name__ == "__main__":
 ```
 
 这个主程序文件其实并没有什么大的变化。接下来我们就应该定义v1函数的路由函数了：
+
+### 编写v1版API
+
+#### router.py
+
+先在当前目录建立v1的目录结构
+
+```
+# tree v1/
+v1/
+├── __init__.py
+├── router.py
+└── wsgi.py
+```
+
+然后书写router.py的主代码：
+
+```
+''''' 
+Created on 2016-12-27
+
+@author: zhaozhilong
+'''
+
+from wsgiref.simple_server import make_server
+from paste.deploy import loadapp
+import sys
+import os
+import wsgi
+
+class Controller(object):
+    def __init__(self):
+        print "Controller"
+
+    def test(self, req):
+        print "req",req
+        return {
+            "name":"test",
+            "properties":"test"
+        }
+
+class MyRouterApp(wsgi.Router):
+    def __init__(self, mapper):
+        controller = Controller() # 实例化Controller这个类
+        mapper.connect(
+            '/test',
+            controller=wsgi.Resource(controller), # 注册这个类
+            action='test', # 定义了这个类的test
+            conditions={'method':['GET']}
+        )
+        super(MyRouterApp, self).__init__(mapper)
+```
+
+我们这里定义了router的规则，设置了/test这个URL的匹配规则，我们在config.ini中匹配到v1之后，就会被转发到MyRouterApp,这个类中，然后在这里匹配到了二级URL ：/test，定义了当HTTP的方法为GET的时候去找Controller函数的test方法。
+
+#### wsgi.py
+
+wsgi重在做路由，利用到了routes这个Python库。
+
+```
+import datetime
+import json
+import routes
+import routes.middleware
+import webob
+import webob.dec
+import webob.exc
+
+class APIMapper(routes.Mapper):
+   """
+   Handle route matching when url is '' because routes.Mapper returns
+   an error in this case.
+   """
+
+   def routematch(self, url=None, environ=None):
+       if url is "":
+           result = self._match("", environ)
+           return result[0], result[1]
+       return routes.Mapper.routematch(self, url, environ)
+
+class Router(object):
+   def __init__(self, mapper):
+       mapper.redirect("", "/")
+       self.map = mapper
+       self._router = routes.middleware.RoutesMiddleware(self._dispatch,
+                                                         self.map)
+
+   @classmethod
+   def factory(cls, global_conf, **local_conf):
+       return cls(APIMapper())
+
+   @webob.dec.wsgify
+   def __call__(self, req):
+       """
+       Route the incoming request to a controller based on self.map.
+       If no match, return a 404.
+       """
+       return self._router
+
+   @staticmethod
+   @webob.dec.wsgify
+   def _dispatch(req):
+       """
+       Called by self._router after matching the incoming request to a route
+       and putting the information into req.environ.  Either returns 404
+       or the routed WSGI app's response.
+       """
+       match = req.environ['wsgiorg.routing_args'][1]
+       if not match:
+           return webob.exc.HTTPNotFound()
+       app = match['controller']
+       return app
+
+class Request(webob.Request):
+   """Add some Openstack API-specific logic to the base webob.Request."""
+
+   def best_match_content_type(self):
+       """Determine the requested response content-type."""
+       supported = ('application/json',)
+       bm = self.accept.best_match(supported)
+       return bm or 'application/json'
+
+   def get_content_type(self, allowed_content_types):
+       """Determine content type of the request body."""
+       if "Content-Type" not in self.headers:
+           return
+
+       content_type = self.content_type
+
+       if content_type not in allowed_content_types:
+           return
+       else:
+           return content_type
+
+class JSONRequestDeserializer(object):
+   def has_body(self, request):
+       """
+       Returns whether a Webob.Request object will possess an entity body.
+
+       :param request:  Webob.Request object
+       """
+       if 'transfer-encoding' in request.headers:
+           return True
+       elif request.content_length > 0:
+           return True
+
+       return False
+
+   def _sanitizer(self, obj):
+       """Sanitizer method that will be passed to json.loads."""
+       return obj
+
+   def from_json(self, datastring):
+       try:
+           return json.loads(datastring, object_hook=self._sanitizer)
+       except ValueError:
+           msg = ('Malformed JSON in request body.')
+           raise webob.exc.HTTPBadRequest(explanation=msg)
+
+   def default(self, request):
+        if self.has_body(request):
+            return {'body': self.from_json(request.body)}
+        else:
+            return {}
+
+class JSONResponseSerializer(object):
+
+    def _sanitizer(self, obj):
+        """Sanitizer method that will be passed to json.dumps."""
+        if isinstance(obj, datetime.datetime):
+            return obj.isoformat()
+        if hasattr(obj, "to_dict"):
+            return obj.to_dict()
+        return obj
+
+    def to_json(self, data):
+        return json.dumps(data, default=self._sanitizer)
+
+    def default(self, response, result):
+        response.content_type = 'application/json'
+        response.body = self.to_json(result)
+
+class Resource(object):
+    def __init__(self, controller, deserializer=None, serializer=None):
+        self.controller = controller
+        self.serializer = serializer or JSONResponseSerializer()
+        self.deserializer = deserializer or JSONRequestDeserializer()
+
+    @webob.dec.wsgify(RequestClass=Request)
+    def __call__(self, request):
+        """WSGI method that controls (de)serialization and method dispatch."""
+        action_args = self.get_action_args(request.environ)
+        action = action_args.pop('action', None)
+
+        deserialized_request = self.dispatch(self.deserializer,
+                                             action, request)
+        action_args.update(deserialized_request)
+
+        action_result = self.dispatch(self.controller, action,
+                                      request, **action_args)
+        try:
+            response = webob.Response(request=request)
+            self.dispatch(self.serializer, action, response, action_result)
+            return response
+
+        except webob.exc.HTTPException as e:
+            return e
+        # return unserializable result (typically a webob exc)
+        except Exception:
+            return action_result
+
+    def dispatch(self, obj, action, *args, **kwargs):
+        """Find action-specific method on self and call it."""
+        try:
+            method = getattr(obj, action)
+        except AttributeError:
+            method = getattr(obj, 'default')
+
+        return method(*args, **kwargs)
+
+    def get_action_args(self, request_environment):
+        """Parse dictionary created by routes library."""
+        try:
+            args = request_environment['wsgiorg.routing_args'][1].copy()
+        except Exception:
+            return {}
+
+        try:
+            del args['controller']
+        except KeyError:
+            pass
+
+        try:
+            del args['format']
+        except KeyError:
+            pass
+
+        return args
+```
 
 
 
