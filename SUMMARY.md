@@ -10,7 +10,7 @@
 * [OpenStack组件开发](openstack组件开发.md)
     * [WSGI模块开发](wsgi模块开发.md)
         * [paste](paste.md)
-        * pecan
+        * [pecan](pecan.md)
         * middleware
     * [数据库模块开发](数据库模块开发.md)
         * [sqlalchemy](sqlalchemy.md)

@@ -111,8 +111,6 @@ version 1.0
 Hello World!
 ```
 
-
-
 ## 设置API版本
 
 因为在OpenStack中，又或者其他大型项目中，我们通常都是要根据版本来区分API的。那么问题来了，怎么用paste实现呢？同样的，我们以代码示例：
@@ -124,7 +122,11 @@ Hello World!
 # tree demo_session2/
 demo_session2/
 ├── config.ini
-└── paste_deploy.py
+├── manage.py
+└── v1
+    ├── __init__.py
+    ├── router.py
+    └── wsgi.py
 ```
 
 同样也要编辑我们的配置文件：
@@ -153,5 +155,5 @@ version = 1.0.0
 paste.app_factory = manage:ShowVersion.factory
 ```
 
-
+编写
 
