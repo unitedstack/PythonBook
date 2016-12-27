@@ -66,20 +66,14 @@ no changes added to commit (use "git add" and/or "git commit -a")
 ```shell
 $ git log
 commit b7323c15962b16266e581893b32936a2af5a77e2
-Author: 
-Date:   
 
     modify2
 
 commit 4a8bfa9e8677d03b0ce5aa96983279bfb49f8015
-Author: 
-Date:   
 
     modify
 
 commit a46b3bac345837f1632e48b2cdec30a6ecdd4e12
-Author: 
-Date:   
 
     add readme
 ```
