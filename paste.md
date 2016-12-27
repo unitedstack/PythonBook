@@ -147,6 +147,8 @@ class API(wsgi.Router):
 
 在上面connect中调用了router的mapper.connect来对我们设置的规则进行注册。
 
+我们定义了，访问 /stacks这个URL的时候，就会去调用stacks这个对象下面的index方法。
+
 ## Paste小程序
 
 ### 建立项目
