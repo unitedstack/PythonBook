@@ -4,7 +4,7 @@
 
 paste是OpenStack一些比较悠久的项目都会使用paste这个模块，例如:nova, neutron, cinder, heat这类项目。我们现在就主要是从简单的例子开始学起，了解OpenStack的API是怎么设计与实现的：
 
-## 实例一
+## 基础练习
 
 ### 建立项目
 
@@ -38,7 +38,7 @@ use = egg:paste#urlmap
 /hello = hello
 ```
 
-\[composite:main\] 这个是程序的主入口,可以不写这个，但是必须在python调用的时候指定从哪里开始读，在下面会讲解到。所有在composite:main里面定义的URL就会去找对应的app。如上面的/hello = hello 就定义了URL为 [http://your\_ip/hello](http://your\_ip/hello) 的对应响应app为hello模块，也就是:
+所有在composite:main里面定义的URL就会去找对应的app。如上面的/hello = hello 就定义了URL为 [http://your\_ip/hello](http://your\_ip/hello) 的对应响应app为hello模块，也就是:
 
 ```
 [app:hello]
@@ -109,6 +109,48 @@ version 1.0
 ```
 # curl http://127.0.0.1:9000/hello
 Hello World!
+```
+
+
+
+## 设置API版本
+
+因为在OpenStack中，又或者其他大型项目中，我们通常都是要根据版本来区分API的。那么问题来了，怎么用paste实现呢？同样的，我们以代码示例：
+
+### 建立工程
+
+```
+# mkdir demo_session2/
+# tree demo_session2/
+demo_session2/
+├── config.ini
+└── paste_deploy.py
+```
+
+同样也要编辑我们的配置文件：
+
+### config.ini
+
+```
+[composite:common]
+use = egg:Paste#urlmap
+/: showversion
+/log: showversion_log
+/v1: apiv1app # 这个就是你v1版本的API的主入口
+
+[pipeline:showversion_log]
+pipeline = filter_log showversion
+
+[filter:filter_log]
+#filter2 deal with time,read args belowmanage
+paste.filter_factory = manage:LogFilter.factory
+
+[app:apiv1app]
+paste.app_factory = v1.router:MyRouterApp.factory
+
+[app:showversion]
+version = 1.0.0
+paste.app_factory = manage:ShowVersion.factory
 ```
 
 
