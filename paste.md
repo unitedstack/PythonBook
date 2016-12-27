@@ -460,5 +460,20 @@ class Resource(object):
         return args
 ```
 
+### 运行程序
+
+```
+# python manage.py 
+Controller
+ShowVersion
+```
+
+### 调用API
+
+```
+# curl http://127.0.0.1:9000/v1/test
+{"name": "test", "properties": "test"}
+```
+
 
 
