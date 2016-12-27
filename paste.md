@@ -2,9 +2,91 @@
 
 ---
 
-paste是OpenStack一些比较悠久的项目都会使用paste这个模块，例如:nova, neutron, cinder, heat这类项目。我们现在就主要是从简单的例子开始学起，了解OpenStack的API是怎么设计与实现的：
+paste是OpenStack一些比较悠久的项目都会使用paste这个模块，例如:nova, neutron, cinder, heat这类项目。我们首先了解OpenStack的API是怎么设计与实现的,然后再使用paste实现我们的小程序：
 
-## 基础练习
+## OpenStack古老的API实现
+
+可以稍微讲一下 OpenStack API 的发展史，原先很 OpenStack 的古老的 API 基本都是用：Paste + PasteDeploy + Routes + WebOb来实现的，发展到后面，社区的人开始厌倦了这一套东西，觉得这套逻辑很烦人，之后兴起的一些 OpenStack 的项目都采用了新的 WSGI 框架 Pecan 。但是 Paste + PasteDeploy + Routes + WebOb 这套东西既然存在了，我们就有学习的必要。
+
+首先我们来看看，这套PPRW组合的在Heat中的实现：
+
+### WSGI程序入口
+
+```
+# path : cmd/heat-api
+def launch_api(setup_logging=True):
+    ...
+
+    # common/config.py
+    app = config.load_paste_app()
+
+    # common/wsgi.py
+    server = wsgi.Server('heat-api', cfg.CONF.heat_api)    
+    server.start(app, default_port=port)
+    return server
+```
+
+启动heat-api的时候会先用paste\_deploy这去加载你的/etc/heat/api-paste.ini这个文件，然后实例化一个paste\_deploy的对象。
+
+```python
+# path: common/config.py
+def load_paste_app(app_name=None):
+    try:
+        # 这里有一个很重要的变量conf_file，它定义了我们api-paste.ini这个文件的位置
+        app = wsgi.paste_deploy_app(conf_file, app_name, cfg.CONF)
+        return app
+    except:
+        ...
+```
+
+然后调用evenlet来启动我们的wsgi服务。
+
+```python
+# path: common/wsgi.py
+class Server(object):
+    """Server class to manage multiple WSGI sockets and applications."""
+
+    def run_server(self):
+        try:
+            eventlet.wsgi.server(
+                self.sock,
+                self.application,
+                custom_pool=self.pool,
+                url_length_limit=URL_LENGTH_LIMIT,
+                log=self._logger,
+                debug=cfg.CONF.debug,
+                keepalive=cfg.CONF.eventlet_opts.wsgi_keep_alive,
+                socket_timeout=socket_timeout)
+```
+这边启动的时候其实paste_deploy已经加载完了API的配置。
+
+## api-paste.ini
+使用Paste和PasteDeploy模块来实现WSGI服务时，都需要一个api-paste.ini文件。这个文件也是Paste框架的精髓，这里需要重点说明一下这个文件如何阅读。
+api-paste.ini文件的格式类似于INI格式，每个section的格式为[type:name]。这里重要的是理解几种不同type的section的作用。
+
+composite: 这种section用于将HTTP请求分发到指定的app。
+app: 这种section表示具体的app。
+filter: 实现一个过滤器中间件。
+pipeline: 用来把把一系列的filter串起来。
+上面这些section是在keystone的paste.ini中用到的，下面详细介绍一下如何使用。这里需要用到WSGIMiddleware(WSGI中间件)的知识，可以在WSGI简介这篇文章中找到。
+
+section composite
+
+这种section用来决定如何分发HTTP请求。Keystone的paste.ini文件中有两个composite的section：
+```
+[composite:main]
+use = egg:Paste#urlmap
+/v2.0 = public_api
+/v3 = api_v3
+/ = public_version_api
+
+[composite:admin]
+use = egg:Paste#urlmap
+/v2.0 = admin_api
+/v3 = api_v3
+/ = admin_version_api
+```
+## Paste小程序
 
 ### 建立项目
 
@@ -495,5 +577,7 @@ ShowVersion
 {"name": "test", "properties": "test"}
 ```
 
+### 程序链接:
 
+git.xxx.xx
 
