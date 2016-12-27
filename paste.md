@@ -155,5 +155,7 @@ version = 1.0.0
 paste.app_factory = manage:ShowVersion.factory
 ```
 
-编写
+### paste\_deploy.py
+
+
 
