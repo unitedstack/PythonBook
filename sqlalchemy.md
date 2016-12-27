@@ -18,9 +18,11 @@ Sqlalchemy
 
 OpenStack项目中我见过两种数据库的代码框架分隔，一种是Keystone的风格，它把一组API的API代码和数据库代码都放在同一个目录下，如下所示：
 
+
+
 由于webdemo采用的是Pecan框架，而且把数据库操作的代码放到同一个目录下也会比较清晰，所以我们采用和Magnum项目相同的方式来编写数据库相关的代码，创建webdemo/db目录，然后把数据库操作的相关代码都放在这个目录下，如下所示：
 
-![](https://sf-static.b0.upaiyun.com/v-5860a40c/global/img/squares.svg)
+
 
 由于webdemo项目还没有使用oslo\_db库，所以代码看起来比较直观，没有Magnum项目复杂。接下来，我们就要开始写数据库操作的相关代码，分为两个步骤：
 
@@ -132,14 +134,14 @@ get_engine
 :
 global
  _ENGINE
-    
+
 if
  _ENGINE 
 is
 not
 None
 :
-        
+
 return
  _ENGINE
 
@@ -147,7 +149,7 @@ return
 'sqlite://'
 )
     db_models.Base.metadata.create_all(_ENGINE)
-    
+
 return
  _ENGINE
 
@@ -159,19 +161,19 @@ get_session_maker
 :
 global
  _SESSION_MAKER
-    
+
 if
  _SESSION_MAKER 
 is
 not
 None
 :
-        
+
 return
  _SESSION_MAKER
 
     _SESSION_MAKER = sqlalchemy.orm.sessionmaker(bind=engine)
-    
+
 return
  _SESSION_MAKER
 
@@ -186,7 +188,7 @@ get_session
     maker = get_session_maker(engine)
     session = maker()
 
-    
+
 return
  session
 ```
@@ -233,20 +235,20 @@ get_user
 :
 
         query = get_session().query(db_models.User).filter_by(user_id=user_id)
-        
+
 try
 :
             user = query.one()
-        
+
 except
  exc.NoResultFound:
-            
+
 # TODO(developer): process this situation
 pass
 return
  user
 
-    
+
 def
 list_users
 (self)
@@ -256,11 +258,11 @@ list_users
         query = session.query(db_models.User)
         users = query.all()
 
-        
+
 return
  users
 
-    
+
 def
 update_user
 (self, user)
@@ -331,39 +333,34 @@ setup_app
         **app_conf
     )
 
-    
+
 return
  app
 ```
 
 现在，我们就可以在controller使用DB API了。我们这里要重新实现[API服务\(4\)](https://segmentfault.com/a/1190000004004179)实现的_GET /v1/users_这个接口：
 
-```
+    ```
+
+    现在，我们就已经完整的实现了这个API，客户端访问API时是从数据库拿数据，而不是返回一个模拟的数据。读者可以使用[API服务\(4\)](https://segmentfault.com/a/1190000004004179)中的方法运行测试服务器来测试这个API。注意：由于数据库操作依赖于SQLAlchemy库，所以需要把它添加到_requirement.txt_中：SQLAlchemy&lt;1.1.0,&gt;=0.9.9。
+
+    ## 小结 {#articleHeader6}
+
+    现在我们已经完成了由于webdemo采用的是Pecan框架，而且把数据库操作的代码放到同一个目录下也会比较清晰，所以我们采用和Magnum项目相同的方式来编写数据库相关的代码，创建webdemo/db目录，然后把数据库操作的相关代码都放在这个目录下，如下所示：
+
+    ![](https://sf-static.b0.upaiyun.com/v-5860a40c/global/img/squares.svg)
+
+    由于webdemo项目还没有使用oslo\_db库，所以代码看起来比较直观，没有Magnum项目复杂。接下来，我们就要开始写数据库操作的相关代码，分为两个步骤：
+
+    1. 在_db/models.py_中定义`User`类，对应数据库的user表。
+
+    2. 在_db/api.py_中实现一个`Connection`类，这个类封装了所有的数据库操作接口。我们会在这个类中实现对user表的CRUD等操作。
+
+    ### 定义User数据模型映射类 {#articleHeader3}
+
+    _db/models.py_中的代码如下：
 
 ```
-
-现在，我们就已经完整的实现了这个API，客户端访问API时是从数据库拿数据，而不是返回一个模拟的数据。读者可以使用[API服务\(4\)](https://segmentfault.com/a/1190000004004179)中的方法运行测试服务器来测试这个API。注意：由于数据库操作依赖于SQLAlchemy库，所以需要把它添加到_requirement.txt_中：SQLAlchemy&lt;1.1.0,&gt;=0.9.9。
-
-## 小结 {#articleHeader6}
-
-现在我们已经完成了由于webdemo采用的是Pecan框架，而且把数据库操作的代码放到同一个目录下也会比较清晰，所以我们采用和Magnum项目相同的方式来编写数据库相关的代码，创建webdemo/db目录，然后把数据库操作的相关代码都放在这个目录下，如下所示：
-
-![](https://sf-static.b0.upaiyun.com/v-5860a40c/global/img/squares.svg)
-
-由于webdemo项目还没有使用oslo\_db库，所以代码看起来比较直观，没有Magnum项目复杂。接下来，我们就要开始写数据库操作的相关代码，分为两个步骤：
-
-1. 在_db/models.py_中定义`User`类，对应数据库的user表。
-
-2. 在_db/api.py_中实现一个`Connection`类，这个类封装了所有的数据库操作接口。我们会在这个类中实现对user表的CRUD等操作。
-
-### 定义User数据模型映射类 {#articleHeader3}
-
-_db/models.py_中的代码如下：
-
-```
-
-```
-
 我们按照我们之前定义的数据模型，实现了映射类。
 
 ### 实现DB API {#articleHeader4}
@@ -371,132 +368,123 @@ _db/models.py_中的代码如下：
 #### DB通用函数
 
 在_db/api.py_中，我们先定义了一些通用函数，代码如下：
-
 ```
 
-```
+    上面的代码中，我们定义了三个函数：
 
-上面的代码中，我们定义了三个函数：
+    * `get_engine`：返回全局唯一的engine，不需要重复分配。
 
-* `get_engine`：返回全局唯一的engine，不需要重复分配。
+    * `get_session_maker`：返回全局唯一的session maker，不需要重复分配。
 
-* `get_session_maker`：返回全局唯一的session maker，不需要重复分配。
+    * `get_session`：每次返回一个新的session，因为一个session不能同时被两个数据库客户端使用。
 
-* `get_session`：每次返回一个新的session，因为一个session不能同时被两个数据库客户端使用。
+    这三个函数是使用SQLAlchemy中经常会封装的，所以OpenStack的oslo\_db项目就封装了这些函数，供所有的OpenStack项目使用。
 
-这三个函数是使用SQLAlchemy中经常会封装的，所以OpenStack的oslo\_db项目就封装了这些函数，供所有的OpenStack项目使用。
+    这里需要注意一个地方，在`get_engine()`中：
 
-这里需要注意一个地方，在`get_engine()`中：
+\_ENGINE  
+ = create\_engine\(  
+'sqlite://'  
+\)  
+    db\_models.Base.metadata.create\_all\(\_ENGINE\)
 
-```
-_ENGINE
- = create_engine(
-'sqlite://'
-)
-    db_models.Base.metadata.create_all(_ENGINE)
-```
+    我们使用了sqlite内存数据库，并且立刻创建了所有的表。这么做只是为了演示方便。在实际的项目中，`create_engine()`的数据库URL参数应该是从配置文件中读取的，而且也不能在创建engine后就创建所有的表（这样数据库的数据都丢了）。要解决在数据库中建表的问题，就要先了解数据库版本管理的知识，也就是database migration，我们在下文中会说明。
 
-我们使用了sqlite内存数据库，并且立刻创建了所有的表。这么做只是为了演示方便。在实际的项目中，`create_engine()`的数据库URL参数应该是从配置文件中读取的，而且也不能在创建engine后就创建所有的表（这样数据库的数据都丢了）。要解决在数据库中建表的问题，就要先了解数据库版本管理的知识，也就是database migration，我们在下文中会说明。
+    #### Connection实现
 
-#### Connection实现
+    `Connection`的实现就简单得多了，直接看代码。这里只实现了`get_user()`和`list_users()`方法。
 
-`Connection`的实现就简单得多了，直接看代码。这里只实现了`get_user()`和`list_users()`方法。
+    ### 在API Controller中使用DB API {#articleHeader5}
 
-```
+    现在我们有了DB API，接下来就是要在Controller中使用它。对于使用Pecan框架的应用来说，我们定义一个Pecan hook，这个hook在每个请求进来的时候实例化一个db的`Connection`对象，然后在controller代码中我们可以直接使用这个`Connection`实例。关于Pecan hook的相关信息，请查看[Pecan官方文档](http://pecan.readthedocs.org/en/latest/hooks.html)。
 
-```
+    首先，我们要实现这个hook，并且加入到app中。hook的实现代码在_webdemo/api/hooks.py_中：
 
-### 在API Controller中使用DB API {#articleHeader5}
-
-现在我们有了DB API，接下来就是要在Controller中使用它。对于使用Pecan框架的应用来说，我们定义一个Pecan hook，这个hook在每个请求进来的时候实例化一个db的`Connection`对象，然后在controller代码中我们可以直接使用这个`Connection`实例。关于Pecan hook的相关信息，请查看[Pecan官方文档](http://pecan.readthedocs.org/en/latest/hooks.html)。
-
-首先，我们要实现这个hook，并且加入到app中。hook的实现代码在_webdemo/api/hooks.py_中：
-
-```
-from
- pecan 
-import
+from  
+ pecan   
+import  
  hooks
 
+from  
+ webdemo.db   
+import  
+ api   
+as  
+ db\_api
 
-from
- webdemo.db 
-import
- api 
-as
- db_api
-
-
-
-class
-DBHook
-(hooks.PecanHook)
-:
-"""Create a db connection instance."""
-def
-before
-(self, state)
+class  
+DBHook  
+\(hooks.PecanHook\)  
+:  
+"""Create a db connection instance."""  
+def  
+before  
+\(self, state\)  
 :
 
-        state.request.db_conn = db_api.Connection()
+```
+    state.request.db_conn = db_api.Connection()
 ```
 
-然后，修改_webdemo/api/app.py_中的`setup_app()`方法：
+    然后，修改_webdemo/api/app.py_中的`setup_app()`方法：
+
+def setup\_app\(\):  
+    config = get\_pecan\_config\(\)
 
 ```
-def setup_app():
-    config = get_pecan_config()
+app_hooks = [hooks.DBHook()]
+app_conf = dict(config.app)
+app = pecan.make_app(
+    app_conf.pop('root'),
+    logging=getattr(config, 'logging', {}),
+    hooks=app_hooks,
+    **app_conf
+)
 
-    app_hooks = [hooks.DBHook()]
-    app_conf = dict(config.app)
-    app = pecan.make_app(
-        app_conf.pop('root'),
-        logging=getattr(config, 'logging', {}),
-        hooks=app_hooks,
-        **app_conf
-    )
-
-    return app
+return app
 ```
 
+```
 现在，我们就可以在controller使用DB API了。我们这里要重新实现[API服务\(4\)](https://segmentfault.com/a/1190000004004179)实现的_GET /v1/users_这个接口：
-
 ```
-...
-class User(wtypes.Base):
-    id = int
-    user_id = wtypes.text
-    name = wtypes.text
+
+...  
+class User\(wtypes.Base\):  
+    id = int  
+    user\_id = wtypes.text  
+    name = wtypes.text  
     email = wtypes.text
 
+class Users\(wtypes.Base\):  
+    users = \[User\]  
+...  
+class UsersController\(rest.RestController\):
 
-class Users(wtypes.Base):
-    users = [User]
-...
-class UsersController(rest.RestController):
-
-    @pecan.expose()
-    def _lookup(self, user_id, *remainder):
-        return UserController(user_id), remainder
-
-    @expose.expose(Users)
-    def get(self):
-        db_conn = request.db_conn     # 获取DBHook中创建的Connection实例
-        users = db_conn.list_users()  # 调用所需的DB API
-        users_list = []
-        for user in users:
-            u = User()
-            u.id = user.id
-            u.user_id = user.user_id
-            u.name = user.name
-            u.email = user.email
-            users_list.append(u)
-        return Users(users=users_list)
-
-    @expose.expose(None, body=User, status_code=201)
-    def post(self, user):
-        print user
 ```
+@pecan.expose()
+def _lookup(self, user_id, *remainder):
+    return UserController(user_id), remainder
+
+@expose.expose(Users)
+def get(self):
+    db_conn = request.db_conn     # 获取DBHook中创建的Connection实例
+    users = db_conn.list_users()  # 调用所需的DB API
+    users_list = []
+    for user in users:
+        u = User()
+        u.id = user.id
+        u.user_id = user.user_id
+        u.name = user.name
+        u.email = user.email
+        users_list.append(u)
+    return Users(users=users_list)
+
+@expose.expose(None, body=User, status_code=201)
+def post(self, user):
+    print user
+```
+
+\`\`\`
 
 现在，我们就已经完整的实现了这个API，客户端访问API时是从数据库拿数据，而不是返回一个模拟的数据。读者可以使用[API服务\(4\)](https://segmentfault.com/a/1190000004004179)中的方法运行测试服务器来测试这个API。注意：由于数据库操作依赖于SQLAlchemy库，所以需要把它添加到_requirement.txt_中：SQLAlchemy&lt;1.1.0,&gt;=0.9.9。
 
