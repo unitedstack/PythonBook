@@ -73,7 +73,7 @@ api-paste.ini文件的格式类似于INI格式，每个section的格式为\[type
 * filter: 实现一个过滤器中间件。
 * pipeline: 用来把把一系列的filter串起来。
 
-上面这些section是在Heat的api-paste.ini中用到的，下面详细介绍一下如何使用。
+上面这些section是在Heat的api-paste.ini中用到的，下面详细介绍一下如何使用。  
 这种section用来决定如何分发HTTP请求。Heat的api-paste.ini文件中有都是用了pipeline管理的：
 
 ```
@@ -121,14 +121,14 @@ class API(wsgi.Router):
         mapper = routes.Mapper()
         default_resource = wsgi.Resource(wsgi.DefaultMethodController(),
                                          wsgi.JSONRequestDeserializer())
-                                         
+
         def connect(controller, path_prefix, routes):
             ...
                 mapper.connect(r['name'], url, controller=controller,
                                action=r['action'],
                                conditions={'method': methods_str})
             ...
-            
+
         ...
 
         # Stacks
@@ -145,9 +145,7 @@ class API(wsgi.Router):
                 ])
 ```
 
-这边调用了stacks这个类的create\_resource方法对这个stacks进行注册。
-
-
+在上面connect中调用了router的mapper.connect来对我们设置的规则进行注册。
 
 ## Paste小程序
 
