@@ -30,7 +30,21 @@ version = 1.0.0
 paste.app_factory = paste_deploy:SayHello.factory
 ```
 
-我们分层来讲解这个文件的意思：
+使用Paste和PasteDeploy模块来实现WSGI服务时，都需要一个config.ini文件。这个文件也是Paste框架的精髓，这里需要重点说明一下这个文件如何阅读。
+
+paste.ini文件的格式类似于INI格式，每个section的格式为\[type:name\]。这里重要的是理解几种不同type的section的作用。
+
+* composite: 这种section用于将HTTP请求分发到指定的app。
+
+* app: 这种section表示具体的app。
+
+* filter: 实现一个过滤器中间件。
+
+* pipeline: 用来把把一系列的filter串起来。
+
+上面这些section是在keystone的paste.ini中用到的，下面详细介绍一下如何使用。这里需要用到WSGIMiddleware\(WSGI中间件\)的知识，可以在[WSGI简介](http://segmentfault.com/a/1190000003069785)这篇文章中找到。
+
+我们先来分层来讲解这个文件的意思：
 
 ```
 [composite:main]
@@ -155,19 +169,11 @@ version = 1.0.0
 paste.app_factory = manage:ShowVersion.factory
 ```
 
-使用Paste和PasteDeploy模块来实现WSGI服务时，都需要一个config.ini文件。这个文件也是Paste框架的精髓，这里需要重点说明一下这个文件如何阅读。
+pipeline关键字指定了很多个名字，这些名字也是paste.ini文件中其他section的名字。请求会从最前面的section开始处理，一直向后传递。pipeline指定的section有如下要求：
 
-paste.ini文件的格式类似于INI格式，每个section的格式为\[type:name\]。这里重要的是理解几种不同type的section的作用。
+* 最后一个名字对应的section一定要是一个app
 
-* composite: 这种section用于将HTTP请求分发到指定的app。
-
-* app: 这种section表示具体的app。
-
-* filter: 实现一个过滤器中间件。
-
-* pipeline: 用来把把一系列的filter串起来。
-
-上面这些section是在keystone的paste.ini中用到的，下面详细介绍一下如何使用。这里需要用到WSGIMiddleware\(WSGI中间件\)的知识，可以在[WSGI简介](http://segmentfault.com/a/1190000003069785)这篇文章中找到。
+* 非最后一个名字对应的section一定要是一个filter
 
 设计这个V1版的API其实理念很简单，访问/v1的时候会去找app:apiv1app这个模块，这个模块的工厂函数又指向了v1.router.MyRouterApp.factory这个工厂函数。
 
