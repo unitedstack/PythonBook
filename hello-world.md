@@ -19,7 +19,7 @@ python -V
 # Centos/RHEL/Fedorq
 yum install -y python
 
-# ubuntu/debian
+# Ubuntu/Debian
 sudo apt-get install python
 ```
 
@@ -136,5 +136,52 @@ print type(c)
 
 ## Python模块引用
 
+模块是一个保存了Python代码的文件。模块能定义函数，类和变量。模块里也能包含可执行的代码。  
+下例是个简单的模块support.py
 
+```Python
+def print_func( par ):
+   print "Hello : ", par
+   return
+```
+
+想使用Python源文件，只需在另一个源文件里执行import语句，如下：
+
+```Python
+#!/usr/bin/python
+
+# 导入模块
+import support
+
+# 现在可以调用模块里包含的函数了
+support.print_func("Zara")
+```
+
+Python的from语句让你从模块中导入一个指定的部分到当前命名空间中，如下:
+
+```Python
+#!/usr/bin/python
+
+# 导入模块
+from support import print_func
+
+# 现在可以调用模块里包含的函数了
+support.print_func("Zara")
+```
+
+把一个模块的所有内容全都导入到当前的命名空间也是可行的，只需使用如下声明：
+
+```Python
+from modname import *
+```
+
+当你导入一个模块，Python解析器对模块位置的搜索顺序是：
+
+* 当前目录
+* 如果不在当前目录，Python 则搜索在 shell 变量 PYTHONPATH 下的每个目录
+* 如果都找不到，Python会察看默认路径。Linux下，默认路径一般为/usr/lib/python/
+
+模块搜索路径存储在system模块的sys.path变量中。变量里包含当前目录，PYTHONPATH和由安装过程决定的默认目录。
+
+Ref: [http://www.runoob.com/python/python-tutorial.html](http://www.runoob.com/python/python-tutorial.html)
 
