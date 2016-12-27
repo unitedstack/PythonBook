@@ -12,9 +12,8 @@
 * [设计模式](设计模式.md)
 * [OpenStack组件开发](openstack组件开发.md)
     * [WSGI模块开发](wsgi模块开发.md)
-        * [paste](paste.md)
+        * [Paste](paste.md)
         * [pecan](pecan.md)
-        * middleware
     * [数据库模块开发](数据库模块开发.md)
         * [sqlalchemy](sqlalchemy.md)
         * [alembic](alembic.md)
