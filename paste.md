@@ -155,15 +155,24 @@ version = 1.0.0
 paste.app_factory = manage:ShowVersion.factory
 ```
 
+这边使用了pipeline的属性，在访问/log 的就会去寻找showversion\_log这个pipeline，pipeline里面定义了：
+
+```
+[pipeline:showversion_log]
+pipeline = filter_log showversion
+```
+
+就会按照filter\_log再到showversion这个流程去调用app.
+
 ### manage.py
 
 ```
 ''''' 
 Created on 2013-6-2 
- 
+
 @author: spch2008 
 '''  
-  
+
 from wsgiref.simple_server import make_server
 import os
 import webob
@@ -208,7 +217,6 @@ if __name__ == "__main__":
     app = loadapp('config:%s' % config_path, name='common')
     server = make_server('localhost', 9000, app)
     server.serve_forever()
-
 ```
 
 
