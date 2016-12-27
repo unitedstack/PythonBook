@@ -7,7 +7,7 @@
     * [异常处理](异常处理.md)
 * [开发辅助工具](开发辅助工具.md)
     * [Pip](pip.md)
-    * [Ipython](ipython.md)
+    * [IPython](ipython.md)
 * [设计模式](设计模式.md)
 * [OpenStack组件开发](openstack组件开发.md)
     * [WSGI模块开发](wsgi模块开发.md)
