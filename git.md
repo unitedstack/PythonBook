@@ -241,4 +241,22 @@ $ git show v0.1
 tag v0.1
 
 version 0.1 released
+$ git tag -d v0.1
+Deleted tag 'v0.1' (was e078af9)
+$ git push origin v1.0
+Total 0 (delta 0), reused 0 (delta 0)
+To git@github.com:username/learngit.git
+ * [new tag]         v1.0 -> v1.0
+$ git push origin --tags
+Counting objects: 1, done.
+Writing objects: 100% (1/1), 554 bytes, done.
+Total 1 (delta 0), reused 0 (delta 0)
+To git@github.com:username/learngit.git
+ * [new tag]         v0.2 -> v0.2
+ * [new tag]         v0.9 -> v0.9
+$ git tag -d v0.9
+Deleted tag 'v0.9' (was 6224937)
+$ git push origin :refs/tags/v0.9
+To git@github.com:username/learngit.git
+ - [deleted]         v0.9
 ```
