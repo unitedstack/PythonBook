@@ -79,11 +79,18 @@ class SayHello(object):
 
 
 if __name__ == "__main__":
+    # 获取配置文件的路径
     path = os.path.abspath('.') + '/'
     config_name = 'config.ini'
     config_path = path + config_name
+    
+    # 把当前的模块导入系统库
     sys.path.append(path)
+    
+    # 加载api的配置文件
     app = loadapp('config:%s' % config_path)
+    
+    # 启动API程序
     server = make_server('localhost', 9000, app)
     server.serve_forever()
 ```
