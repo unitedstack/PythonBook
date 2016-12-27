@@ -168,5 +168,48 @@ Deleted branch dev (was 6844da0).
 $ git branch
 * master
 ```
+当有冲突的修改被merge到master中的时候，会被提示有冲突存在：
+```shell
+$ git merge dev
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Automatic merge failed; fix conflicts and then commit the result.
+$ git status
+# On branch master
+# Your branch is ahead of 'origin/master' by 2 commits.
+#   (use "git push" to publish your local commits)
+#
+# You have unmerged paths.
+#   (fix conflicts and run "git commit")
+#
+# Unmerged paths:
+#   (use "git add <file>..." to mark resolution)
+#
+#	both modified:      README.md
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+$ cat README.md
+# remotefirst
+add for dev branch
+<<<<<<< HEAD
+to conflict from master
+=======
+to conflict
+>>>>>>> dev
+```
+冲突的解决办法只有修改相应的内容后再次提交。
+```shell
+$ git checkout dev
+README.md: needs merge
+error: you need to resolve your current index first
+...# 修改相应内容后再次提交
+$ git add README.md
+$ git commit -m "to merge"
+[dev b838ac8] to merge
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+$ git checkout master
+$ git merge dev
+Already up-to-date.
+```
 
 ## 标签管理
