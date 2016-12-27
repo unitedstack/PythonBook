@@ -74,7 +74,7 @@ class SayHello(object):
 
     @classmethod
     def factory(cls, global_conf, **kwargs):
-        print '1.0'
+        print 'version 1.0'
         return SayHello(kwargs['version'])
 
 
@@ -83,16 +83,32 @@ if __name__ == "__main__":
     path = os.path.abspath('.') + '/'
     config_name = 'config.ini'
     config_path = path + config_name
-    
+
     # 把当前的模块导入系统库
     sys.path.append(path)
-    
+
     # 加载api的配置文件
     app = loadapp('config:%s' % config_path)
-    
+
     # 启动API程序
     server = make_server('localhost', 9000, app)
     server.serve_forever()
+```
+
+### 运行程序
+
+我们现在就可以运行了paste\_deploy了。
+
+```
+# python paste_deploy.py
+version 1.0
+```
+
+### 访问API
+
+```
+# curl http://127.0.0.1:9000/hello
+Hello World!
 ```
 
 
