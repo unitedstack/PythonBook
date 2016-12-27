@@ -218,6 +218,9 @@ Already up-to-date.
 $ git tag v1.0
 $ git tag
 v1.0
+```
+可以通过携带具体的版本号实现给之前的版本添加tag：
+```shell
 $ git log --pretty=oneline --abbrev-commit
 6a5819e merged bug fix 101
 cc17032 fix bug 101
@@ -236,13 +239,22 @@ $ git show v0.9
 commit 622493706ab447b6bb37e4e2a2f276a20fed2ab4
 
     add merge
+```
+tag中也可以添加详细的描述：
+```shell
 $ git tag -a v0.1 -m "version 0.1 released" 3628164
 $ git show v0.1
 tag v0.1
 
 version 0.1 released
+```
+可以通过-d参数删除tag：
+```shell
 $ git tag -d v0.1
 Deleted tag 'v0.1' (was e078af9)
+```
+当有远程库的时候，也可以将tag同步或删除：
+```shell
 $ git push origin v1.0
 Total 0 (delta 0), reused 0 (delta 0)
 To git@github.com:username/learngit.git
