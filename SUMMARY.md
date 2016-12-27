@@ -5,8 +5,32 @@
     * [Python函数](方法与对象.md)
     * [Python类定义](python类定义.md)
     * [异常处理](异常处理.md)
-* 开发辅助工具
-* 设计模式
-* OpenStack组件开发
-* Django模块开发
+* [开发辅助工具](开发辅助工具.md)
+* [设计模式](设计模式.md)
+* [OpenStack组件开发](openstack组件开发.md)
+    * [WSGI模块开发](wsgi模块开发.md)
+        * [paste](paste.md)
+        * pecan
+        * middleware
+    * [数据库模块开发](数据库模块开发.md)
+        * [sqlalchemy](sqlalchemy.md)
+        * [alembic](alembic.md)
+    * [单元测试模块](单元测试模块.md)
+        * mox\/mock
+        * pep8静态编译测试
+        * tox\/testr
+    * [Oslo库使用](oslo库使用.md)
+        * oslo.config
+        * oslo.messaging
+        * oslo.service
+        * oslo.log
+    * [构建工程](构建工程.md)
+        * pbr
+        * setup-tool
+    * [Doc文档构建](doc文档构建.md)
+        * sphinx
+    * [SDK开发](sdk开发.md)
+        * argparse
+        * cliff
+* [Django模块开发](django模块开发.md)
 

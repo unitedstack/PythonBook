@@ -136,5 +136,11 @@ print type(c)
 
 ## Python模块引用
 
+```
+#!/usr/bin/env python
+
+import 
+```
+
 
 
