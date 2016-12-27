@@ -213,27 +213,3 @@ Already up-to-date.
 ```
 
 ## 标签管理
-标签就是为了让本来不可读的16进制版本号更加易读，通过git tag命令就可以为当前的版本加上标签：
-```shell
-$ git tag v1.0
-$ git tag
-v1.0
-$ git log --pretty=oneline --abbrev-commit
-6a5819e merged bug fix 101
-cc17032 fix bug 101
-7825a50 merge with no-ff
-6224937 add merge
-59bc1cb conflict fixed
-400b400 & simple
-75a857c AND simple
-fec145a branch test
-d17efd8 remove test.txt
-$ git tag v0.9 6224937
-$ git tag
-v0.9
-v1.0
-$ git show v0.9
-commit 622493706ab447b6bb37e4e2a2f276a20fed2ab4
-
-    add merge
-```
