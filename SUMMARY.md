@@ -9,6 +9,7 @@
     * [Pip](pip.md)
     * [IPython](ipython.md)
     * [Git](git.md)
+    * [Pdb](pdb.md)
 * [设计模式](设计模式.md)
 * [OpenStack组件开发](openstack组件开发.md)
     * [WSGI模块开发](wsgi模块开发.md)
