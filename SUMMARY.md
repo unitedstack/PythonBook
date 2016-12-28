@@ -22,14 +22,12 @@
             * [Alembic实现](alembic实现.md)
     * [单元测试模块](单元测试模块.md)
         * [tox单元测试实现](openstack单元测试实现.md)
+        * mock测试实现
     * [Oslo库使用](oslo库使用.md)
         * oslo.config
         * oslo.messaging
         * oslo.service
         * oslo.log
-    * [构建工程](构建工程.md)
-        * pbr
-        * setup-tool
     * [Doc文档构建](doc文档构建.md)
         * [sphinx](sphinx.md)
     * [SDK开发](sdk开发.md)
