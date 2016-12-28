@@ -19,9 +19,9 @@
         * [Pecan框架](pecan.md)
             * [Pecan实战](pecan实战.md)
     * [数据库模块开发](数据库模块开发.md)
-        * [SQLAlchemy](sqlalchemy.md)
+        * [ORM模型SQLAlchemy](sqlalchemy.md)
             * [SQLAlchemy实战](实战.md)
-        * [alembic](alembic.md)
+        * [Alembic版本控制](alembic.md)
     * [单元测试模块](单元测试模块.md)
     * [Oslo库使用](oslo库使用.md)
         * oslo.config
