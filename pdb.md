@@ -45,7 +45,7 @@ $ python script.py 1 2
 
 输入n可以进入下一行，但并不会进入到函数内部，同时回车则表示执行上一条调试命令：
 ```shell
-(Pdb)n
+(Pdb) n
 > /root/script.py(12)main()
 -> print addition
 (Pdb) 
@@ -57,7 +57,7 @@ $ python script.py 1 2
 ['script.py', '1', '2']
 > /root/script.py(11)main()
 -> addition = add(sys.argv[1], sys.argv[2])
-(Pdb)p sys.argv[1]
+(Pdb) p sys.argv[1]
 '1'
 (Pdb) 
 ```
@@ -88,5 +88,31 @@ $ python script.py 1 2
 --Return--
 > /root/script.py(4)add()->3
 -> return int(num1) + int(num2)
+(Pdb) 
+```
+当我们在调试已经开始之后想要在程序中特定的地方增加断点的时候，可以通过b来实现：
+```shell
+$ python script.py 1 2
+['script.py', '1', '2']
+> /root/script.py(11)main()
+-> addition = add(sys.argv[1], sys.argv[2])
+(Pdb) b 6
+Breakpoint 1 at /root/script.py:6
+(Pdb) c
+3
+> /root/script.py(6)sub()
+-> return int(num1) - int(num2)
+(Pdb) l
+  1  	import pdb
+  2  	import sys
+  3  	def add(num1=0, num2=0):
+  4  		return int(num1) + int(num2)
+  5  	def sub(num1=0, num2=0):
+  6 B->		return int(num1) - int(num2)
+  7  	def main():
+  8  	#Assuming our inputs are valid numbers
+  9  		print sys.argv
+ 10  		pdb.set_trace() # <-- Break point added here
+ 11  		addition = add(sys.argv[1], sys.argv[2])
 (Pdb) 
 ```
