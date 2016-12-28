@@ -34,7 +34,7 @@
         * pbr
         * setup-tool
     * [Doc文档构建](doc文档构建.md)
-        * sphinx
+        * [sphinx](sphinx.md)
     * [SDK开发](sdk开发.md)
         * argparse
         * cliff
