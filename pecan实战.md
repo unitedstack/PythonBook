@@ -125,7 +125,7 @@ WSME
 $ PYTHONPATH=. python webdemo/cmd/api.py
 ```
 
-现在测试服务器已经起来了，可以通过浏览器访问http://localhost:_9000/_这个地址来查看结果。（你可能会发现，返回的是XML格式的结果，而我们想要的是JSON格式的。这个是WSME的问题，我们后面再来处理）。
+现在测试服务器已经起来了，可以通过浏览器访问[http://localhost:\_9000/\_这个地址来查看结果。（你可能会发现，返回的是XML格式的结果，而我们想要的是JSON格式的。这个是WSME的问题，我们后面再来处理）。](http://localhost:_9000/_这个地址来查看结果。（你可能会发现，返回的是XML格式的结果，而我们想要的是JSON格式的。这个是WSME的问题，我们后面再来处理）。)
 
 到这里，我们的REST API服务的框架已经搭建完成，并且测试服务器也跑起来了。
 
@@ -171,7 +171,9 @@ class RootController(rest.RestController):
 
 再次运行我们的测试服务器，就可以返现返回值为JSON格式了。
 
-### 实现 GET /v1
+---
+
+## 实现 GET /v1
 
 这个其实就是实现v1这个版本的API的路径前缀。在Pecan的帮助下，我们很容易实现这个，只要按照如下两步做即可：
 
@@ -211,9 +213,11 @@ class RootController(rest.RestController):
         return "webdemo"
 ```
 
-此时，你访问 http://localhost:9000/v1 就可以看到结果了。
+此时，你访问 [http://localhost:9000/v1](http://localhost:9000/v1) 就可以看到结果了。
 
-### 实现 GET /v1/users
+---
+
+## 实现 GET /v1/users
 
 ### 添加users controller {#articleHeader14}
 
@@ -240,7 +244,7 @@ class RootController(rest.RestController):
 
 其中 _users _是一个列表，列表中的每个元素都是一个user。那么，我们要如何使用WSME来规范我们的响应值呢？答案就是使用WSME的自定义类型。我们可以利用WSME的类型功能定义出一个user类型，然后再定义一个user的列表类型。最后，我们就可以使用上面的expose方法来规定这个API返回的是一个user的列表类型。
 
-#### 定义user类型和user列表类型
+### 定义user类型和user列表类型
 
 这里我们需要用到WSME的Complex types的功能，请先看一下文档[Types](http://wsme.readthedocs.org/en/latest/types.html)。简单说，就是我们可以把WSME的基本类型组合成一个复杂的类型。我们的类型需要继承自_wsme.types.Base_这个类。因为我们在本文只会实现一个user相关的API，所以这里我们把所有的代码都放在_webdemo/api/controllers/v1/users.py_文件中。来看下和user类型定义相关的部分：
 
@@ -270,7 +274,7 @@ class UsersController(rest.RestController):
 
 这样就完成了API的返回值检查了。
 
-## 实现API逻辑 {#articleHeader16}
+### 实现API逻辑 {#articleHeader16}
 
 我们现在来完成API的逻辑部分。不过为了方便大家理解，我们直接返回一个写好的数据，就是上面贴出来的那个。
 
@@ -294,6 +298,9 @@ class UsersController(rest.RestController):
 ```
 
 代码中，会先根据user信息生成User实例的列表`users_list`，然后再生成Users实例。此时，重启测试服务器后，你就可以从浏览器访问 [h](http://localhost/)ttp://127.0.0.1:9000/v1/users ，就能看到结果了。
+
+---
+
 
 ## 实现 POST /v1/users {#articleHeader17}
 
@@ -326,6 +333,8 @@ $ curl -X POST http://localhost:8080/v1/users -H "Content-Type: application/json
 ```
 
 你可以自己测试一下区别。要更多的了解本节提到的expose参数，请参考WSM文档[Functions](http://wsme.readthedocs.org/en/latest/functions.html)。最后，你接收到一个创建用户请求时，一般会为这个用户分配一个id。本文前面已经提到了OpenStack项目中一般使用UUID。你可以修改一下上面的逻辑，为每个用户分配一个UUID。
+
+---
 
 ## 实现 GET /v1/users/&lt;UUID&gt; {#articleHeader18}
 
@@ -393,7 +402,7 @@ class UserController(rest.RestController):
 使用curl来检查一下效果：
 
 ```
- $ curl http://localhost:9000/v1/users/521cf58808494f09a6f951c115640daa
+$ curl http://localhost:9000/v1/users/521cf58808494f09a6f951c115640daa
 {"age": 30, "id": "521cf58808494f09a6f951c115640daa", "name": "Mr_zhao"}
 ```
 
