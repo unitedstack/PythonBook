@@ -301,7 +301,6 @@ class UsersController(rest.RestController):
 
 ---
 
-
 ## 实现 POST /v1/users {#articleHeader17}
 
 这个API会接收用户上传的一个JSON格式的数据，然后打印出来（实际中一般是存到数据库之类的），要求用户上传的数据符合User类型的规范，并且返回的状态码为201。代码如下：
@@ -406,5 +405,9 @@ $ curl http://localhost:9000/v1/users/521cf58808494f09a6f951c115640daa
 {"age": 30, "id": "521cf58808494f09a6f951c115640daa", "name": "Mr_zhao"}
 ```
 
+# 总结 {#articleHeader24}
 
+到此为止，我们已经完成了我们的API服务了，虽然没有实际的逻辑，但是本文搭建起来的框架也是OpenStack中API服务的一个常用框架，很多大项目的API服务代码都和我们的webdemo长得差不多。最后再说一下，本文的代码在github上托管着：[diabloneo/webdemo](https://github.com/diabloneo/webdemo)。
+
+现在我们已经了解了包管理和API服务了，那么接下来就要开始数据库相关的操作了。大部分OpenStack的项目都是使用非常著名的sqlalchemy库来实现数据库操作的，本系列接下来的文章就是要来说明数据库的相关知识和应用。
 
