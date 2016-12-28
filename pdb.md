@@ -41,12 +41,52 @@ $ python script.py 1 2
 (Pdb)
 ```
 
-## 开始调试
+## 具体操作
 
-输入n可以进入下一行,：
+输入n可以进入下一行，但并不会进入到函数内部，同时回车则表示执行上一条调试命令：
 ```shell
 (Pdb)n
 > /root/script.py(12)main()
 -> print addition
+(Pdb) 
+```
+单击c将进入到下一个断点或直接跳到末尾，取决于是否程序下放还是否存在断点。
+如果我们希望知道某个变量的内容，可以通过p来显示：
+```shell
+$ python script.py 1 2
+['script.py', '1', '2']
+> /root/script.py(11)main()
+-> addition = add(sys.argv[1], sys.argv[2])
+(Pdb)p sys.argv[1]
+'1'
+(Pdb) 
+```
+如果我们希望能够进入到一个函数内部，则需要使用到单步操作s，进入到函数内部后，n和p等操作是可以继续使用的，l则可以显示当前所在位置，而在函数内部时通过r则可以快速跳转到函数的返回行：
+```shell
+(Pdb) s
+--Call--
+> /root/script.py(3)add()
+-> def add(num1=0, num2=0):
+(Pdb) n
+> /root/script.py(4)add()
+-> return int(num1) + int(num2)
+(Pdb) p num1
+'1'
+(Pdb) l
+  1  	import pdb
+  2  	import sys
+  3  	def add(num1=0, num2=0):
+  4  ->		return int(num1) + int(num2)
+  5  	def sub(num1=0, num2=0):
+  6  		return int(num1) - int(num2)
+  7  	def main():
+  8  	#Assuming our inputs are valid numbers
+  9  		print sys.argv
+ 10  		pdb.set_trace() # <-- Break point added here
+ 11  		addition = add(sys.argv[1], sys.argv[2])
+(Pdb) r
+--Return--
+> /root/script.py(4)add()->3
+-> return int(num1) + int(num2)
 (Pdb) 
 ```
