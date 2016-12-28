@@ -22,9 +22,9 @@
             * [Alembic实现](alembic实现.md)
     * [单元测试模块](单元测试模块.md)
         * [tox单元测试实现](openstack单元测试实现.md)
-        * mock测试实现
+        * [mock测试实现](mock测试实现.md)
     * [Oslo库使用](oslo库使用.md)
-        * oslo.config
+        * [oslo.config](osloconfig.md)
         * oslo.messaging
         * oslo.service
         * oslo.log
