@@ -116,3 +116,25 @@ Breakpoint 1 at /root/script.py:6
  11  		addition = add(sys.argv[1], sys.argv[2])
 (Pdb) 
 ```
+在调试期间，我们可以动态分配变量的值以协助调试：
+```shell
+$ python script.py 1 2
+['script.py', '1', '2']
+> /root/script.py(11)main()
+-> addition = add(sys.argv[1], sys.argv[2])
+(Pdb)  sys.argv[1] = 3
+(Pdb) p sys.argv[1]
+3
+(Pdb) c
+5
+1
+```
+如果你想设置一些如n（即PDB指令）这样的变量，你应该使用这种指令：
+```shell
+(Pdb) !n=5
+(Pdb) p n
+5
+```
+最后，在代码的任何地方如果你想结束调试，可以使用“q”，那么正在执行的程序将会终止。
+
+更多内容可参考[官方文档](https://docs.python.org/2/library/pdb.html)。
