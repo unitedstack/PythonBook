@@ -10,7 +10,7 @@
     * [IPython](ipython.md)
     * [Git](git.md)
     * [Pdb](pdb.md)
-    * Bindep
+    * [Bindep](bindep.md)
 * [设计模式](设计模式.md)
 * [OpenStack组件开发](openstack组件开发.md)
     * [WSGI模块开发](wsgi模块开发.md)
@@ -18,6 +18,7 @@
         * [Pecan框架](pecan.md)
     * [数据库模块开发](数据库模块开发.md)
         * [sqlalchemy](sqlalchemy.md)
+            * [实战](实战.md)
         * [alembic](alembic.md)
     * [单元测试模块](单元测试模块.md)
     * [Oslo库使用](oslo库使用.md)
