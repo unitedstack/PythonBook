@@ -122,7 +122,7 @@ version_num
 
 ### 小结 {#articleHeader16}
 
-现在，我们就已经完成了database migration代码框架的搭建，可以成功执行了第一个版本的数据库迁移。OpenStack项目中也是这么来做数据库迁移的。后续，一旦修改了项目，需要修改数据模型时，只要新增migration脚本即可。这部分代码也可以在[https://github.com/diabloneo/webdemo](https://github.com/diabloneo/webdemo)中看到。
+现在，我们就已经完成了database migration代码框架的搭建，可以成功执行了第一个版本的数据库迁移。OpenStack项目中也是这么来做数据库迁移的。后续，一旦修改了项目，需要修改数据模型时，只要新增migration脚本即可。这部分代码也可以在 https://github.com/zhaozhilong1993/webdemo 中看到。
 
 在实际生产环境中，当我们发布了一个项目的新版本后，在上线的时候，都会自动执行数据库迁移操作，升级数据库版本到最新的版本。如果线上的数据库版本已经是最新的，那么这个操作没有任何影响；如果不是最新的，那么会把数据库升级到最新的版本。
 
