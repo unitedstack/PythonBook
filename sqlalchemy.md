@@ -10,11 +10,17 @@ SQLAlchemy项目是Python中最著名的ORM实现，不仅在Python项目中也�
 
 使用SQLAlchemy大体上分为三个步骤：连接到数据库，定义数据模型，执行数据操作。
 
+### 基本概念
+
+首先这个是一张SQLAlchemy官网的图。
+
+![](/assets/import.png)
+
+我们发现，Database对外的接口DBAPI而调用DBAPI的时候就要经过Pool或者Dialect模块，但在这个两个模块之前，你必须先声明一个Engine，然后通过连接这个Engine来间接操作DB。
+
 ### 连接到数据库 {#articleHeader11}
 
 在你的应用可以使用数据库前，你要先定义好数据库的连接，包括数据库在哪里，用什么账号访问等。所有的这些工作都是通过Engine对象来进行的，所以我们的操作顺序就是数据库URL到创建 Engine 对象，然后调用 Engine对象操作 DB。
-
- 
 
 #### 数据库URL
 
@@ -31,8 +37,6 @@ connection=mysql+pymysql://nova_api:416801e9ced4496f@192.168.176.254/nova_api
 ```
 
 这个就是定义了数据库连接的URL。
-
-
 
 #### 创建Engine对象
 
@@ -54,11 +58,9 @@ engine = create_engine( 'sqlite://:memory:' )
 
 具体的参数就不祥系展开了，可以参考官方文档：[Engine Configuration](http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html)。
 
-
-
 #### 使用Engine对象
 
-有了Engine对象之后，就可以调用Engine对象的`connect()`方法来获得一个到数据库的连接对象；然后可以在这个连接对象上调用`execute()`来执行SQL语句，调用`begin(),commit(),rollback()`来执行事务操作；调用`close()`来关闭连接。Engine对象也有一些快捷方法来直接执行上述操作，避免了每次都要调用`connect()`来获取连接这种繁琐的代码，比如`engine.execute()`,`with engine.begin()`等。
+有了`Engine`对象之后，就可以调用`Engine`对象的`connect()`方法来获得一个到数据库的连接对象；然后可以在这个连接对象上调用`execute()`来执行SQL语句，调用`begin(),commit(),rollback()`来执行事务操作；调用`close()`来关闭连接。Engine对象也有一些快捷方法来直接执行上述操作，避免了每次都要调用`connect()`来获取连接这种繁琐的代码，比如`engine.execute(),with engine.begin()`等。
 
 ## User数据模型 {#articleHeader1}
 
@@ -492,8 +494,8 @@ app = pecan.make\_app\(
 
 return app
 
-    ```
-    现在，我们就可以在controller使用DB API了。我们这里要重新实现[API服务\(4\)](https://segmentfault.com/a/1190000004004179)实现的_GET /v1/users_这个接口：
+```
+现在，我们就可以在controller使用DB API了。我们这里要重新实现[API服务\(4\)](https://segmentfault.com/a/1190000004004179)实现的_GET /v1/users_这个接口：
 
 ...  
 class User\(wtypes.Base\):  
@@ -506,30 +508,30 @@ class Users\(wtypes.Base\):
     users = \[User\]  
 ...  
 class UsersController\(rest.RestController\):
-
 ```
-@pecan.expose()
-def _lookup(self, user_id, *remainder):
-    return UserController(user_id), remainder
 
-@expose.expose(Users)
-def get(self):
-    db_conn = request.db_conn     # 获取DBHook中创建的Connection实例
-    users = db_conn.list_users()  # 调用所需的DB API
-    users_list = []
-    for user in users:
-        u = User()
-        u.id = user.id
-        u.user_id = user.user_id
-        u.name = user.name
-        u.email = user.email
-        users_list.append(u)
-    return Users(users=users_list)
+@pecan.expose\(\)  
+def \_lookup\(self, user\_id, \*remainder\):  
+    return UserController\(user\_id\), remainder
 
-@expose.expose(None, body=User, status_code=201)
-def post(self, user):
-    print user
-```
+@expose.expose\(Users\)  
+def get\(self\):  
+    db\_conn = request.db\_conn     \# 获取DBHook中创建的Connection实例  
+    users = db\_conn.list\_users\(\)  \# 调用所需的DB API  
+    users\_list = \[\]  
+    for user in users:  
+        u = User\(\)  
+        u.id = user.id  
+        u.user\_id = user.user\_id  
+        u.name = user.name  
+        u.email = user.email  
+        users\_list.append\(u\)  
+    return Users\(users=users\_list\)
+
+@expose.expose\(None, body=User, status\_code=201\)  
+def post\(self, user\):  
+    print user  
+\`\`\`
 
 \`\`\`
 
