@@ -25,5 +25,6 @@ _build  conf.py  index.rst  make.bat  Makefile  _static  _templates
 
 ## 小结
 
-Sphinx的使用其实很简单，但是构建文档的时候要注意rst格式的语法规范。详情可以参照：
+Sphinx的使用其实很简单，但是构建文档的时候要注意rst格式的语法规范。详情可以参照：http://ju.outofmemory.cn/entry/105733 ，这里面讲解了很多的关于rst格式的规范和样式。
+
 
