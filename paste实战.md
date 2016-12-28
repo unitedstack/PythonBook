@@ -487,5 +487,5 @@ ShowVersion
 
 ## 总结:
 
-总的来说paste的框架巨烦巨复杂，如果你对这个框架不熟悉用起来特别难上手。所以，社区后来的项目就慢慢进化到pecan这个框架上面了。本文的代码都被托管在了 xxx.git上面了。可以下载下来好好分析。
+总的来说paste的框架巨烦巨复杂，如果你对这个框架不熟悉用起来特别难上手。所以，社区后来的项目就慢慢进化到pecan这个框架上面了。本文的代码都被托管在了[ https://github.com/zhaozhilong1993/paste ](https://github.com/zhaozhilong1993/webdemo)上面了。可以下载下来好好分析。
 
