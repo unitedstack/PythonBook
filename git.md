@@ -213,3 +213,62 @@ Already up-to-date.
 ```
 
 ## 标签管理
+在Git中打标签非常简单，通过git tag命令即可完成：
+```shell
+$ git tag v1.0
+$ git tag
+v1.0
+```
+可以通过携带具体的版本号实现给之前的版本添加tag：
+```shell
+$ git log --pretty=oneline --abbrev-commit
+6a5819e merged bug fix 101
+cc17032 fix bug 101
+7825a50 merge with no-ff
+6224937 add merge
+59bc1cb conflict fixed
+400b400 & simple
+75a857c AND simple
+fec145a branch test
+d17efd8 remove test.txt
+$ git tag v0.9 6224937
+$ git tag
+v0.9
+v1.0
+$ git show v0.9
+commit 622493706ab447b6bb37e4e2a2f276a20fed2ab4
+
+    add merge
+```
+tag中也可以添加详细的描述：
+```shell
+$ git tag -a v0.1 -m "version 0.1 released" 3628164
+$ git show v0.1
+tag v0.1
+
+version 0.1 released
+```
+可以通过-d参数删除tag：
+```shell
+$ git tag -d v0.1
+Deleted tag 'v0.1' (was e078af9)
+```
+当有远程库的时候，也可以将tag同步或删除：
+```shell
+$ git push origin v1.0
+Total 0 (delta 0), reused 0 (delta 0)
+To git@github.com:username/learngit.git
+ * [new tag]         v1.0 -> v1.0
+$ git push origin --tags
+Counting objects: 1, done.
+Writing objects: 100% (1/1), 554 bytes, done.
+Total 1 (delta 0), reused 0 (delta 0)
+To git@github.com:username/learngit.git
+ * [new tag]         v0.2 -> v0.2
+ * [new tag]         v0.9 -> v0.9
+$ git tag -d v0.9
+Deleted tag 'v0.9' (was 6224937)
+$ git push origin :refs/tags/v0.9
+To git@github.com:username/learngit.git
+ - [deleted]         v0.9
+```
