@@ -28,8 +28,7 @@
         * oslo.messaging
         * oslo.service
         * oslo.log
-    * [Doc文档构建](doc文档构建.md)
-        * [sphinx](sphinx.md)
+    * [Sphinx文档构建](doc文档构建.md)
     * [SDK开发](sdk开发.md)
         * argparse
         * cliff
