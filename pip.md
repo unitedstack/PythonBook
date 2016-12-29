@@ -101,12 +101,10 @@ compyte                   - A common set of compute primitives for PyCUDA and Py
 
 ```shell
 [global]
-timeout = 60
-index-url = http://download.zope.org/ppix
+index-url = https://pypi.doubanio.com/simple/
 
 [install]
-ignore-installed = true
-no-dependencies = yes
+trusted-host=pypi.doubanio.com
 ```
 
 
