@@ -1,7 +1,6 @@
 # Summary
 
 * [Python基础](README.md)
-    * [基础语法](基础语法.md)
 * [开发辅助工具](开发辅助工具.md)
     * [Pip](pip.md)
     * [IPython](ipython.md)
@@ -24,7 +23,7 @@
         * [mock测试实现](mock测试实现.md)
     * [Oslo库使用](oslo库使用.md)
         * [oslo.config](osloconfig.md)
-        * oslo.messaging
+        * [oslo.messaging](oslomessaging.md)
         * oslo.service
         * oslo.log
     * [Sphinx文档构建](doc文档构建.md)
