@@ -90,5 +90,11 @@ True
 192.168.122.1
 ```
 
+基本上调用oslo\_config的时候就需要做两件事：
+
+* 注册group，就像上面的注册了一个opt\_group，CONF.register\_group\(opt\_group\)
+* 注册group的opts，就是像CONF.register\_opts\(opts\)
+* 定义配置文件的名称，去找配置文件就是cfg.find\_configfile\('service'\)
+
 
 

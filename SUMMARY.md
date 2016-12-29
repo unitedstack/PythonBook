@@ -30,8 +30,8 @@
         * [oslo\_log](oslolog.md)
     * [Sphinx文档构建](doc文档构建.md)
     * [SDK开发](sdk开发.md)
-        * argparse
-        * cliff
+        * [argparse](argparse.md)
+        * [cliff](cliff.md)
 * [Django模块开发](django模块开发.md)
     * [OpenStack面板Horizon实现](openstack面板horizon实现.md)
 
