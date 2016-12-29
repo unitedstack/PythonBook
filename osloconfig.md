@@ -37,7 +37,41 @@ auth_url=192.168.122.1:5000
 ## 实现主程序
 
 ```
+#!/usr/bin/env python
 
+from oslo_config import cfg
+
+import socket
+
+opt_group = cfg.OptGroup(
+    name='DEFAULT',
+    title='default setting'
+)
+
+opts = [
+    cfg.StrOpt(
+        'host',
+        default=socket.gethostname(),
+        help='Name of host'
+    ),
+    cfg.IntOpt(
+        'collect_worker',
+        default=1,
+        help='Number of worker for collector service.'
+    ),
+    cfg.BoolOpt(
+        'roll_back',
+        default=False,
+        help='roll_back options'
+    )
+]
+
+CONF.register_group(opt_group)
+
+CONF = cfg.CONF
+
+default_config_files = cfg.find_config_files('service')
+CONF(default_config_files=['service.conf'])
 ```
 
 
