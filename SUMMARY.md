@@ -22,10 +22,10 @@
         * [tox单元测试实现](openstack单元测试实现.md)
         * [mock测试实现](mock测试实现.md)
     * [Oslo库使用](oslo库使用.md)
-        * [oslo.cfg](osloconfig.md)
-        * [oslo.messaging](oslomessaging.md)
-        * oslo.service
-        * oslo.log
+        * [oslo\_config](osloconfig.md)
+        * [oslo\_messaging](oslomessaging.md)
+        * [oslo\_service](osloservice.md)
+        * [oslo\_log](oslolog.md)
     * [Sphinx文档构建](doc文档构建.md)
     * [SDK开发](sdk开发.md)
         * argparse
