@@ -67,11 +67,16 @@ opts = [
 ]
 
 CONF.register_group(opt_group)
+CONF.register_opts(opts)
 
 CONF = cfg.CONF
 
 default_config_files = cfg.find_config_files('service')
 CONF(default_config_files=['service.conf'])
+
+print CONF.roll_back
+print CONF.collect_worker
+print CONF.host
 ```
 
 
