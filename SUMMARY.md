@@ -31,6 +31,6 @@
     * [SDK开发](sdk开发.md)
         * argparse
         * cliff
-* Django模块开发
+* [Django模块开发](django模块开发.md)
     * OpenStack面板Horizon实现
 
