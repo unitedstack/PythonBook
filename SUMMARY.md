@@ -8,7 +8,6 @@
     * [Git](git.md)
     * [Pdb](pdb.md)
     * [Bindep](bindep.md)
-* [设计模式](设计模式.md)
 * [OpenStack组件开发](openstack组件开发.md)
     * [WSGI模块开发](wsgi模块开发.md)
         * [Paste框架](paste.md)
@@ -32,5 +31,4 @@
     * [SDK开发](sdk开发.md)
         * argparse
         * cliff
-* [Django模块开发](django模块开发.md)
 
