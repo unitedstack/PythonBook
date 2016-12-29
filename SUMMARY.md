@@ -32,4 +32,5 @@
         * argparse
         * cliff
 * Django模块开发
+    * OpenStack面板Horizon实现
 
