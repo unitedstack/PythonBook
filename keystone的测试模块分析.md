@@ -1,0 +1,134 @@
+# Keystone的单元测试框架 {#articleHeader12}
+
+---
+
+
+现在，我们以Keystone项目为例，来看下真实项目中的单元测试是如何架构的。我们采用自顶向下的方式，先从最上层的部分介绍起。
+
+## 使用tox进行测试环境管理 {#articleHeader13}
+
+大部分情况下，我们都是通过tox命令来执行单元测试的，并且传递环境名称给tox命令：
+
+```
+$ tox -e py27
+```
+
+tox命令首先会读取项目根目录下的_tox.ini_文件，获取相关的信息，然后根据配置构建virtualenv，保存在_.tox/_目录下，以环境名称命名：
+
+```
+ls .tox
+```
+
+除了_log_目录，其他的都是普通的virtualenv环境，你可以自己查看一下内容。我们来看下_py27_这个环境的相关配置（在tox.ini）中，我直接在内容上注释一些配置的用途：
+
+```
+[tox]
+minversion = 1.6
+skipsdist = True
+# envlist表示本文件中配置的环境都有哪些
+envlist = py34,py27,pep8,docs,genconfig,releasenotes
+
+# testenv是默认配置，如果某个配置在环境专属的section中没有，就从这个section中读取
+[testenv]
+# usedevelop表示安装virtualenv的时候，本项目自己的代码采用开发模式安装，也就是不会拷贝代码到virtualenv目录中，只是做个链接
+usedevelop = True
+# install_command表示构建环境的时候要执行的命令，一般是使用pip安装
+install_command = pip install -U {opts} {packages}
+setenv = VIRTUAL_ENV={envdir}
+# deps指定构建环境的时候需要安装的依赖包，这个就是作为pip命令的参数
+# keystone这里使用的写法比较特殊一点，第二行的.[ldap,memcache,mongodb]是两个依赖，第一个点'.'表示当前项目的依赖，也就是requirements.txt，第二个部分[ldap,memcache,mongodb]表示extra，是在setup.cfg文件中定义的一个段的名称，该段下定义了额外的依赖，这些可以查看PEP0508
+# 一般的项目这里会采用更简单的方式来书写，直接安装两个文件中的依赖：
+#    -r{toxinidir}/requirements.txt
+#    -r{toxinidir}/test-requirements.txt
+deps = -r{toxinidir}/test-requirements.txt
+       .[ldap,memcache,mongodb]
+# commands表示构建好virtualenv之后要执行的命令，这里调用了tools/pretty_tox.sh来执行测试
+commands =
+  find keystone -type f -name "*.pyc" -delete
+  bash tools/pretty_tox.sh '{posargs}'
+whitelist_externals =
+  bash
+  find
+passenv = http_proxy HTTP_PROXY https_proxy HTTPS_PROXY no_proxy NO_PROXY PBR_VERSION
+
+# 这个section是为py34环境定制某些配置的，没有定制的配置，从[testenv]读取
+[testenv:py34]
+commands =
+  find keystone -type f -name "*.pyc" -delete
+  bash tools/pretty_tox_py3.sh
+```
+
+上面提到的[PEP-0508](https://www.python.org/dev/peps/pep-0508/)是依赖格式的完整说明。setup.cfg的_extra_部分如下：
+
+```
+[extras]
+ldap =
+  python-ldap>=2.4:python_version=='2.7' # PSF
+  ldappool>=1.0:python_version=='2.7' # MPL
+memcache =
+  python-memcached>=1.56 # PSF
+mongodb =
+  pymongo!=3.1,>=3.0.2 # Apache-2.0
+bandit =
+  bandit>=0.17.3 # Apache-2.0
+```
+
+## 使用testrepository管理测试的运行 {#articleHeader14}
+
+上面我们看到_tox.ini_文件中的`commands`参数中执行的是_tools/pretty\_tox.sh_命令。这个脚本的内容如下：
+
+```
+#!/usr/bin/env bash
+
+set -o pipefail
+
+TESTRARGS=$1
+# testr和setuptools已经集成，所以可以通过setup.py testr命令来执行
+# --testr-args表示传递给testr命令的参数，告诉testr要传递给subunit的参数
+# subunit-trace是os-testr包中的命令（os-testr是OpenStack的一个项目），用来解析subunit的输出的。
+python setup.py testr --testr-args="--subunit $TESTRARGS" | subunit-trace -f
+retval=$?
+# NOTE(mtreinish) The pipe above would eat the slowest display from pbr's testr
+# wrapper so just manually print the slowest tests.
+echo -e "\nSlowest Tests:\n"
+# 测试结束后，让testr显示出执行时间最长的那些测试用例
+testr slowest
+exit $retval
+```
+
+tox就是从_tools/pretty\_tox.sh_这个命令开始调用testr来执行单元测试的。testr本身的配置是放在项目根目录下的_.testr.conf_文件：
+
+    [DEFAULT]
+    test_command=
+        ${PYTHON:-python} -m subunit.run discover -t ./ ${OS_TEST_PATH:-./keystone/tests/unit} $LISTOPT $IDOPTION
+
+    test_id_option=--load-list $IDFILE
+    test_list_option=--list
+    group_regex=.*(test_cert_setup)
+
+
+    # NOTE(morganfainberg): If single-worker mode is wanted (e.g. for live tests)
+    # the environment variable ``TEST_RUN_CONCURRENCY`` should be set to ``1``. If
+    # a non-default (1 worker per available core) concurrency is desired, set
+    # environment variable ``TEST_RUN_CONCURRENCY`` to the desired number of
+    # workers.
+    test_run_concurrency=echo ${TEST_RUN_CONCURRENCY:-0}
+
+这个文件中的配置项可以从[testr官方文档](http://testrepository.readthedocs.org/en/latest/)中找到。其中`test_command`命令表示要执行什么命令来运行测试用例，这里使用的是`subunit.run`，这个我们在上面提到过了。
+
+到目前为止的流程就是：
+
+1. tox建好virtualenv
+
+2. tox调用testr
+
+3. testr调用subunit来执行测试用例
+
+每个OpenStack项目基本上也都是这样。如果你自己在开发一个Python项目，你也可以参考这个架构。
+
+从上面的层次结构可以看出，OpenStack中的大项目，由于单元测试用例很多（Keystone现在有超过6200个单元测试用例），所以其单元测试架构也会比较复杂。要写好单元测试，需要先了解一下整个测试代码的架构。
+
+# 总结 {#articleHeader16}
+
+本文我们了解了Python中的单元测试的概念和工具，并且通过Keystone项目了解了实际项目中的单元测试的架构，希望有助于各位读者更好的掌握OpenStack项目的单元测试基础。[webdemo项目](https://github.com/diabloneo/webdemo)目前没有单元测试的代码，接下来我们就为它添加单元测试框架。
+
