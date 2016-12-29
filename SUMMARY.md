@@ -7,7 +7,6 @@
     * [IPython](ipython.md)
     * [Git](git.md)
     * [Pdb](pdb.md)
-    * [Bindep](bindep.md)
 * [OpenStack组件开发](openstack组件开发.md)
     * [WSGI模块开发](wsgi模块开发.md)
         * [Paste框架](paste.md)
