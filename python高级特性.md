@@ -28,10 +28,9 @@ function做为decorator的入参，然后又把处理完后的值赋给function.
 
 
 ``` python
-def decorator(param):
-    def fun(param)
-        return param
-    return fun(param)
+def decorator(funtion):
+    print "doing decoration"
+    return funtion
 ```
 
 
