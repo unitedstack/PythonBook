@@ -1,6 +1,7 @@
 # Summary
 
 * [Python基础](README.md)
+    * [Python高级特性](python高级特性.md)
 * [开发辅助工具](开发辅助工具.md)
     * [Pip](pip.md)
     * [IPython](ipython.md)
