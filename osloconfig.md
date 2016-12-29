@@ -36,6 +36,8 @@ auth_url=192.168.122.1:5000
 
 ## 实现主程序
 
+我们的主程序其实就需要找到配置文件，然后把对应的配置项给读取进来。
+
 ```
 #!/usr/bin/env python
 
@@ -79,5 +81,5 @@ print CONF.collect_worker
 print CONF.host
 ```
 
-
+我们
 
