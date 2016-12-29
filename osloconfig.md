@@ -81,5 +81,14 @@ print CONF.collect_worker
 print CONF.host
 ```
 
-我们
+我们先看看这个程序的输出：
+
+```
+[root@devstack oslo_cfg]# python service.py 
+True
+2
+192.168.122.1
+```
+
+
 
