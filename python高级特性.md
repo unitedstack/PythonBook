@@ -166,3 +166,4 @@ contextlib.contextmanager装饰器提供了一个上下文的管理器,
    yield 后面就相当于 __exit__
 
 ## 小结
+对于Python的高级特性还有很多例子，可以参考 https://segmentfault.com/a/1190000000498466#articleHeader2 这篇博客的内容。当然还有很多经典的用法，这就需要在OpenStack工程里面进行实践探索了。
