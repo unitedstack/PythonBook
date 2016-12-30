@@ -1,7 +1,5 @@
 # Pecan框架
 
----
-
 上一篇文章我们了解了一个框架Paste。Pecan框架相比上一篇文章的啰嗦框架有如下好处：
 
 * 不用自己写WSGI application了

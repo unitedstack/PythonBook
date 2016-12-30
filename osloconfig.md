@@ -1,11 +1,9 @@
-## oslo\_config
+# oslo\_config
 
----
-
-oslo\_config主要是用于服务端程序启动的时候需要从配置文件里面读取一些参数而设定的，  
-如:heat-engine,heat-api等  
-，注册后的配置文件的参数可以在通过类似cfg.CONF.&lt;register\_group\_name&gt;.&lt;cmd&gt;调用  
-。下面我们就书写一个小程序，把oslo\_config用起来。
+oslo\_config 主要是用于服务端程序启动的时候需要从配置文件里面读取一些参数而设定的，
+如:heat-engine, heat-api 等
+，注册后的配置文件的参数可以在通过类似 cfg.CONF.&lt;register\_group\_name&gt;.&lt;cmd&gt; 调用
+。下面我们就书写一个小程序，把 oslo\_config 用起来。
 
 ## 目录结构
 
@@ -20,7 +18,7 @@ oslo\_config主要是用于服务端程序启动的时候需要从配置文件�
 
 ## 书写配置文件
 
-接下来我们开始书写我们的配置文件，也就是service.conf
+接下来我们开始书写我们的配置文件，也就是 service.conf
 
 ```
 [DEFAULT]
@@ -32,7 +30,7 @@ host=192.168.122.1
 auth_url=192.168.122.1:5000
 ```
 
-可以看到我们的配置文件很简单，就几个非常简单的参数，接下来我们需要做的就是把这个配置文件里面的参数，全部注册到oslo\_config里面。
+可以看到我们的配置文件很简单，就几个非常简单的参数，接下来我们需要做的就是把这个配置文件里面的参数，全部注册到 oslo\_config 里面。
 
 ## 实现主程序
 
@@ -84,17 +82,17 @@ print CONF.host
 我们先看看这个程序的输出：
 
 ```
-[root@devstack oslo_cfg]# python service.py 
+[root@devstack oslo_cfg]# python service.py
 True
 2
 192.168.122.1
 ```
 
-基本上调用oslo\_config的时候就需要做两件事：
+基本上调用 oslo\_config 的时候就需要做两件事：
 
-* 注册group，就像上面的注册了一个opt\_group，CONF.register\_group\(opt\_group\)
-* 注册group的opts，就是像CONF.register\_opts\(opts\)
-* 定义配置文件的名称，去找配置文件就是cfg.find\_configfile\('service'\)
+* 注册 group，就像上面的注册了一个 opt\_group，CONF.register\_group\(opt\_group\)
+* 注册 group 的 opts，就是像 CONF.register\_opts\(opts\)
+* 定义配置文件的名称，去找配置文件就是 cfg.find\_configfile\('service'\)
 
 
 
