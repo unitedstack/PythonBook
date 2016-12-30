@@ -1,17 +1,17 @@
-# Python基础
+# Python 基础
 
-本教程适合想从零开始学习Python编程语言的开发人员。当然本教程也会对一些模块进行深入，让你更好的了解Python的应用。
+本教程适合想从零开始学习 Python 编程语言的开发人员。当然本教程也会对一些模块进行深入，让你更好的了解 Python 的应用。
 
 ## 构建环境
 
-Python已经经历过很长的时间的磨炼，现在有2.6，2.7，3.0+这3种大版本。
-默认情况下，Centos的发行版都默认安装了python。查看本地的python版本可以使用：
+Python 已经经历过很长的时间的磨炼，现在有2.6，2.7，3.0+这3种大版本。
+默认情况下，CentOS 的发行版都默认安装了 python。查看本地的 python 版本可以使用：
 
 ```shell
 python -V
 ```
 
-如果你的python工具没有安装，那么你可以通过：
+如果你的 python 工具没有安装，那么你可以通过：
 
 ```shell
 # Centos/RHEL/Fedorq
@@ -23,7 +23,7 @@ sudo apt-get install python
 
 ## Hello World
 
-有了上面的Python环境，你可以执行你的第一个Python程序，跟大家打声招呼：
+有了上面的Python环境，你可以执行你的第一个 Python 程序，跟大家打声招呼：
 
 ```python
 #!/usr/bin/python
@@ -31,7 +31,7 @@ sudo apt-get install python
 print "Hello, World!";
 ```
 
-至此，你开始成为Python世界的一员。
+至此，你开始成为 Python 世界的一员。
 
 前面章节中我们已经学会了如何用 Python 输出 "Hello, World!"，英文没有问题，但是如果你输出中文字符"你好，世界"就有可能会碰到中文编码问题。
 
@@ -52,7 +52,7 @@ File "test.py", line 2
 SyntaxError: Non-ASCII character '\xe4' in file test.py on line 2, but no encoding declared; see http://www.python.org/peps/pep-0263.html for details
 ```
 
-Python中默认的编码格式是 ASCII 格式，在没修改编码格式时无法正确打印汉字，所以在读取中文时会报错。
+Python 中默认的编码格式是 ASCII 格式，在没修改编码格式时无法正确打印汉字，所以在读取中文时会报错。
 
 解决方法为只要在文件开头加入\# -\*- coding: UTF-8 -\*-或者\#coding=utf-8就行了。
 
@@ -112,9 +112,9 @@ while (count < 9):
    break
 ```
 
-## Python数据类型
+## Python 数据类型
 
-Python主要支持的数据类型有List\(列表\),Map\(字典\),String\(字符串\)。
+Python 主要支持的数据类型有 List\(列表\), Map\(字典\), String\(字符串\)。
 
 ```Python
 #!/usr/bin/python
@@ -132,10 +132,10 @@ c = "String"
 print type(c)
 ```
 
-## Python模块引用
+## Python 模块引用
 
-模块是一个保存了Python代码的文件。模块能定义函数，类和变量。模块里也能包含可执行的代码。
-下例是个简单的模块support.py
+模块是一个保存了 Python 代码的文件。模块能定义函数，类和变量。模块里也能包含可执行的代码。
+下例是个简单的模块 support.py
 
 ```Python
 def print_func( par ):
@@ -143,7 +143,7 @@ def print_func( par ):
    return
 ```
 
-想使用Python源文件，只需在另一个源文件里执行import语句，如下：
+想使用 Python 源文件，只需在另一个源文件里执行 import 语句，如下：
 
 ```Python
 #!/usr/bin/python
@@ -155,7 +155,7 @@ import support
 support.print_func("Zara")
 ```
 
-Python的from语句让你从模块中导入一个指定的部分到当前命名空间中，如下:
+Python的from 语句让你从模块中导入一个指定的部分到当前命名空间中，如下:
 
 ```Python
 #!/usr/bin/python
@@ -177,9 +177,9 @@ from modname import *
 
 * 当前目录
 * 如果不在当前目录，Python 则搜索在 shell 变量 PYTHONPATH 下的每个目录
-* 如果都找不到，Python会察看默认路径。Linux下，默认路径一般为/usr/lib/python/
+* 如果都找不到，Python 会察看默认路径。Linux 下，默认路径一般为/usr/lib/python/
 
-模块搜索路径存储在system模块的sys.path变量中。变量里包含当前目录，PYTHONPATH和由安装过程决定的默认目录。
+模块搜索路径存储在 system 模块的 sys.path 变量中。变量里包含当前目录，PYTHONPATH 和由安装过程决定的默认目录。
 
 Ref: [http://www.runoob.com/python/python-tutorial.html](http://www.runoob.com/python/python-tutorial.html)
 

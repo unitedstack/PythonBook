@@ -10,13 +10,13 @@
 $ tox -e py27
 ```
 
-tox命令首先会读取项目根目录下的_tox.ini_文件，获取相关的信息，然后根据配置构建 virtualenv，保存在_.tox/_目录下，以环境名称命名：
+tox命令首先会读取项目根目录下的 _tox.ini_ 文件，获取相关的信息，然后根据配置构建 virtualenv，保存在 _.tox/_ 目录下，以环境名称命名：
 
 ```
 ls .tox
 ```
 
-除了_log_目录，其他的都是普通的 virtualenv 环境，你可以自己查看一下内容。我们来看下_py27_这个环境的相关配置（在 tox.ini）中，我直接在内容上注释一些配置的用途：
+除了 _log_ 目录，其他的都是普通的 virtualenv 环境，你可以自己查看一下内容。我们来看下 _py27_ 这个环境的相关配置（在 tox.ini）中，我直接在内容上注释一些配置的用途：
 
 ```
 [tox]
@@ -55,7 +55,7 @@ commands =
   bash tools/pretty_tox_py3.sh
 ```
 
-上面提到的 PEP-0508[https://www.python.org/dev/peps/pep-0508/](https://www.python.org/dev/peps/pep-0508/)是依赖格式的完整说明。setup.cfg的_extra_部分如下：
+上面提到的 PEP-0508 [https://www.python.org/dev/peps/pep-0508/](https://www.python.org/dev/peps/pep-0508/)是依赖格式的完整说明。setup.cfg的_extra_部分如下：
 
 ```
 [extras]
@@ -93,7 +93,7 @@ testr slowest
 exit $retval
 ```
 
-tox 就是从_tools/pretty\_tox.sh_这个命令开始调用 testr 来执行单元测试的。testr 本身的配置是放在项目根目录下的_.testr.conf_文件：
+tox 就是从 _tools/pretty\_tox.sh_ 这个命令开始调用 testr 来执行单元测试的。testr 本身的配置是放在项目根目录下的_.testr.conf_文件：
 ```
     [DEFAULT]
     test_command=

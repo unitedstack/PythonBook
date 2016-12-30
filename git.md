@@ -12,8 +12,8 @@ $ sudo apt-get install git
 ## 操作
 
 ### 创建版本库
-版本库又名仓库，英文名repository，你可以简单的理解一个目录，这个目录里面的所有文件都可以被Git管理起来，每个文件的修改，删除，Git都能跟踪，以便任何时刻都可以追踪历史，或者在将来某个时刻还可以将文件”还原”。
-创建版本库的操作非常简单，新建一个空文件夹，并在该目录下执行git init命令就可以将该目录变成git可管理的仓库。
+版本库又名仓库，英文名 repository，你可以简单的理解一个目录，这个目录里面的所有文件都可以被 Git 管理起来，每个文件的修改，删除，Git 都能跟踪，以便任何时刻都可以追踪历史，或者在将来某个时刻还可以将文件”还原”。
+创建版本库的操作非常简单，新建一个空文件夹，并在该目录下执行 git init 命令就可以将该目录变成 git 可管理的仓库。
 
 ```shell
 $ mkdir newrepo
@@ -24,13 +24,13 @@ $ ls -a
 ```
 
 ### 将文件添加到版本库中
-首先该文件一定要位于此版本库文件夹中，通过git add命令就可以将文件添加到暂存区中。
+首先该文件一定要位于此版本库文件夹中，通过 git add 命令就可以将文件添加到暂存区中。
 
 ```shell
 $ echo "this is a new file" > readme.txt
 $ git add readme.txt    #此处不会有任何显示，则表示执行成功
 ```
-通过命令git commit则可以将文件提交到仓库
+通过命令 git commit 则可以将文件提交到仓库
 
 ```shell
 $ git commit -m "add readme"
@@ -38,10 +38,10 @@ $ git commit -m "add readme"
  1 file changed, 1 insertion
  create mode 100644 readme.txt
 ```
-则此时已提交了一个readme.txt文件
+则此时已提交了一个 readme.txt 文件
 
 ### 查看当前状态
-可以通过git status查看当前目录是否有文件未提交
+可以通过 git status 查看当前目录是否有文件未提交
 
 无未提交示例：
 
@@ -62,10 +62,10 @@ nothing to commit, working directory clean
 #
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
-此时则可以通过git diff来显示未提交的内容。
+此时则可以通过 git diff 来显示未提交的内容。
 
 ### 版本回退
-当我们对文件进行了多次修改后，可以通过git log显示修改记录，我们可以看到最近的三次提交：
+当我们对文件进行了多次修改后，可以通过 git log 显示修改记录，我们可以看到最近的三次提交：
 
 ```shell
 $ git log
@@ -82,13 +82,13 @@ commit a46b3bac345837f1632e48b2cdec30a6ecdd4e12
     add readme
 ```
 
-如果我们希望将文件回退到之前的版本的时候，则可以使用git reset命令
+如果我们希望将文件回退到之前的版本的时候，则可以使用 git reset 命令
 
 ```shell
-$ git reset --hard HEAD^    #HEAD^表示回退到上一版本,HEAD^^则表示上两个版本,以此类推
+$ git reset --hard HEAD^    #HEAD^ 表示回退到上一版本,HEAD^^ 则表示上两个版本,以此类推
 HEAD is now at 4a8bfa9 modify
 ```
-如果我们希望将文件回退到之前的最新版本，但现在已经无法通过git log显示相应的内容，则可以通过git reflog查看相应版本号
+如果我们希望将文件回退到之前的最新版本，但现在已经无法通过 git log 显示相应的内容，则可以通过 git reflog 查看相应版本号
 
 ```shell
 $ git reflog
@@ -102,7 +102,7 @@ HEAD is now at b7323c1 modify2
 
 ### 管理修改
 
-当我们在工作过程中发现当前的修改内容有误，则可以通过git checkout丢弃掉当前的修改内容
+当我们在工作过程中发现当前的修改内容有误，则可以通过 git checkout 丢弃掉当前的修改内容
 
 ```shell
 $ git checkout -- readme.txt
@@ -110,13 +110,13 @@ $ git checkout -- readme.txt
 
 ### 远程仓库
 
-通常与远程仓库的通信过程是通过ssh加密的，所以需要我们将公钥上传到相应的远程仓库服务器上。以GitHub为例，登录后在右上角的settings中可以将我们本地服务器私钥对应的公钥进行导入。
-之后我们就可以为我们的本地仓库创建对应的远程仓库，以GitHub为例，登录后在右上角找到“create a new repo”，在repo name中填入希望对该仓库的命名，则成功的在GitHub上创建了一个仓库。
-之后我们则可以通过git remote add命令将本地仓库与远程仓库进行关联，通过git push将本地仓库内容进行推送。
+通常与远程仓库的通信过程是通过 ssh 加密的，所以需要我们将公钥上传到相应的远程仓库服务器上。以 GitHub 为例，登录后在右上角的 settings 中可以将我们本地服务器私钥对应的公钥进行导入。
+之后我们就可以为我们的本地仓库创建对应的远程仓库，以 GitHub 为例，登录后在右上角找到 “create a new repo”，在 repo name 中填入希望对该仓库的命名，则成功的在 GitHub 上创建了一个仓库。
+之后我们则可以通过 git remote add 命令将本地仓库与远程仓库进行关联，通过 git push 将本地仓库内容进行推送。
 
 ```shell
 $ git remote add origin https://github.com/username/remoterepo.git
-$ git push -u origin master    # -u参数的使用可以将本地的master分支和远程master分支进行关联，之后的操作就可以省略掉origin master参数
+$ git push -u origin master    # -u 参数的使用可以将本地的 master 分支和远程 master 分支进行关联，之后的操作就可以省略掉 origin master 参数
 Username for 'https://github.com': username
 Password for 'https://username@github.com':
 Counting objects: 9, done.
@@ -129,7 +129,7 @@ To https://github.com/huangmu1987/remoterepo.git
 Branch master set up to track remote branch master from origin.
 ```
 
-而常见的使用过程中，远程库通常是先于本地库而存在的，那么我们则需要从远程库克隆一个本地库，可以通过git clone完成相应的工作，假设我们已存在一个remotefirst的远程库。
+而常见的使用过程中，远程库通常是先于本地库而存在的，那么我们则需要从远程库克隆一个本地库，可以通过 git clone 完成相应的工作，假设我们已存在一个 remotefirst 的远程库。
 
 ```shell
 $ git clone https://github.com/username/remotefirst.git
@@ -141,10 +141,10 @@ Unpacking objects: 100% (3/3), done.
 
 ### 分支管理
 
-在Git中，除了主分支即master分支外，可以通过相应的命令创建其他的分支，常见命令如下：
+在 Git 中，除了主分支即 master 分支外，可以通过相应的命令创建其他的分支，常见命令如下：
 
 ```shell
-$ git checkout -b dev    # -b参数表示创建并切换，可以理解为是git branch dev与git checkout dev两条命令的集合
+$ git checkout -b dev    # -b 参数表示创建并切换，可以理解为是 git branch dev 与 git checkout dev 两条命令的集合
 Switched to a new branch 'dev'
 $ git branch
 * dev
@@ -155,7 +155,7 @@ $ git commit -m "add for dev branch"
 [dev 6844da0] add for dev branch
  1 file changed, 1 insertion(+), 1 deletion(-)
 ```
-对分支的修改不会影响master分支中的内容：
+对分支的修改不会影响 master 分支中的内容：
 
 ```shell
 $ git checkout master
@@ -164,7 +164,7 @@ $ cat README.md
 # remotefirst
 ```
 
-通过命令可以将分支的内容merge回master分支中：
+通过命令可以将分支的内容 merge 回 master 分支中：
 
 ```shell
 $ git merge dev
@@ -180,7 +180,7 @@ $ cat README.md
 add for dev branch
 ```
 
-当分支的内容已经merge回master中后，就可以将分支删除：
+当分支的内容已经 merge 回 master 中后，就可以将分支删除：
 
 ```shell
 $ git branch -d dev
@@ -188,7 +188,7 @@ Deleted branch dev (was 6844da0).
 $ git branch
 * master
 ```
-当有冲突的修改被merge到master中的时候，会被提示有冲突存在：
+当有冲突的修改被 merge 到 master 中的时候，会被提示有冲突存在：
 
 ```shell
 $ git merge dev
@@ -237,7 +237,7 @@ Already up-to-date.
 
 ### 标签管理
 
-在Git中打标签非常简单，通过git tag命令即可完成：
+在 Git 中打标签非常简单，通过 git tag 命令即可完成：
 
 ```shell
 $ git tag v1.0
@@ -245,7 +245,7 @@ $ git tag
 v1.0
 ```
 
-可以通过携带具体的版本号实现给之前的版本添加tag：
+可以通过携带具体的版本号实现给之前的版本添加 tag：
 
 ```shell
 $ git log --pretty=oneline --abbrev-commit
@@ -268,7 +268,7 @@ commit 622493706ab447b6bb37e4e2a2f276a20fed2ab4
     add merge
 ```
 
-tag中也可以添加详细的描述：
+tag 中也可以添加详细的描述：
 
 ```shell
 $ git tag -a v0.1 -m "version 0.1 released" 3628164
@@ -278,14 +278,14 @@ tag v0.1
 version 0.1 released
 ```
 
-可以通过-d参数删除tag：
+可以通过 -d 参数删除 tag：
 
 ```shell
 $ git tag -d v0.1
 Deleted tag 'v0.1' (was e078af9)
 ```
 
-当有远程库的时候，也可以将tag同步或删除：
+当有远程库的时候，也可以将 tag 同步或删除：
 
 ```shell
 $ git push origin v1.0
