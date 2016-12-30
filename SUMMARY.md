@@ -33,6 +33,4 @@
     * [SDK 开发](sdk开发.md)
         * [argparse](argparse.md)
         * [cliff](cliff.md)
-* [Django 模块开发](django模块开发.md)
-    * [OpenStack 面板 Horizon 实现](openstack面板horizon实现.md)
 
