@@ -1,8 +1,6 @@
 # Paste实战
 
----
-
-花了好大的篇幅讲paste的那一套组件，现在我们通过一个小程序来增强我们的认知。
+花了好大的篇幅讲 paste 的那一套组件，现在我们通过一个小程序来增强我们的认知。
 
 ## 构建我们的工程结构
 
@@ -14,7 +12,7 @@ demo_session1/
 └── paste_deploy.py
 ```
 
-首先是，我们需要一个定义我们API的配置文件:
+首先是，我们需要一个定义我们 API 的配置文件:
 
 ### config.ini
 
@@ -28,19 +26,23 @@ version = 1.0.0
 paste.app_factory = paste_deploy:SayHello.factory
 ```
 
-使用Paste和PasteDeploy模块来实现WSGI服务时，都需要一个config.ini文件。这个文件也是Paste框架的精髓，这里需要重点说明一下这个文件如何阅读。
+使用 Paste 和 PasteDeploy 模块来实现 WSGI 服务时，都需要一个 config.ini 文件。这个文件也是 Paste 框架的精髓，这里需要重点说明一下这个文件如何阅读。
 
-paste.ini文件的格式类似于INI格式，每个section的格式为\[type:name\]。这里重要的是理解几种不同type的section的作用。
+paste.ini 文件的格式类似于 INI 格式，每个 section 的格式为 \[type:name\]。这里重要的是理解几种不同 type 的 section 的作用。
 
-* composite: 这种section用于将HTTP请求分发到指定的app。
+* composite
+    **这种 section 用于将 HTTP 请求分发到指定的 app。**
 
-* app: 这种section表示具体的app。
+* app
+    **这种 section 表示具体的 app。**
 
-* filter: 实现一个过滤器中间件。
+* filter
+    **实现一个过滤器中间件。**
 
-* pipeline: 用来把把一系列的filter串起来。
+* pipeline
+    **用来把把一系列的 filter 串起来。**
 
-上面这些section是在keystone的paste.ini中用到的，下面详细介绍一下如何使用。这里需要用到WSGIMiddleware\(WSGI中间件\)的知识，可以在[WSGI简介](http://segmentfault.com/a/1190000003069785)这篇文章中找到。
+上面这些 section 是在 keystone的paste.ini 中用到的，下面详细介绍一下如何使用。这里需要用到 WSGIMiddleware\(WSGI中间件\) 的知识，可以在 WSGI 简介[http://segmentfault.com/a/1190000003069785](http://segmentfault.com/a/1190000003069785)这篇文章中找到。
 
 我们先来分层来讲解这个文件的意思：
 
@@ -50,7 +52,7 @@ use = egg:paste#urlmap
 /hello = hello
 ```
 
-所有在composite:main里面定义的URL就会去找对应的app。如上面的/hello = hello 就定义了URL为 [http://your\_ip/hello](http://your\_ip/hello) 的对应响应app为hello模块，也就是:
+所有在 composite:main 里面定义的 URL 就会去找对应的 app。如上面的 /hello = hello 就定义了 URL 为 [http://your\_ip/hello](http://your\_ip/hello) 的对应响应 app 为 hello 模块，也就是:
 
 ```
 [app:hello]
@@ -58,11 +60,11 @@ version = 1.0.0
 paste.app_factory = paste_deploy:SayHello.factor
 ```
 
-这里面默认找的Python模块就是paste\_deploy.SayHello下面的factor函数。
+这里面默认找的 Python 模块就是 paste\_deploy.SayHello 下面的 factor 函数。
 
 ### paste\_deploy.py
 
-我们现在来看看paste\_deploy.py的主程序：
+我们现在来看看 paste\_deploy.py 的主程序：
 
 ```
 #!/usr/bin/env python
@@ -109,7 +111,7 @@ if __name__ == "__main__":
 
 ### 运行程序
 
-我们现在就可以运行了paste\_deploy了。
+我们现在就可以运行了 paste\_deploy 了。
 
 ```
 # python paste_deploy.py
@@ -127,7 +129,7 @@ Hello World!
 
 ## 编写v1 版本API
 
-因为在OpenStack中，又或者其他大型项目中，我们通常都是要根据版本来区分API的。那么问题来了，怎么用paste实现呢？同样的，我们以代码示例：
+因为在 OpenStack 中，又或者其他大型项目中，我们通常都是要根据版本来区分 API 的。那么问题来了，怎么用 paste 实现呢？同样的，我们以代码示例：
 
 ### 拓展我们的工程结构
 
@@ -169,22 +171,22 @@ version = 1.0.0
 paste.app_factory = manage:ShowVersion.factory
 ```
 
-pipeline关键字指定了很多个名字，这些名字也是paste.ini文件中其他section的名字。请求会从最前面的section开始处理，一直向后传递。pipeline指定的section有如下要求：
+pipeline 关键字指定了很多个名字，这些名字也是 paste.ini 文件中其他section的名字。请求会从最前面的 section 开始处理，一直向后传递。pipeline 指定的 section 有如下要求：
 
-* 最后一个名字对应的section一定要是一个app
+* 最后一个名字对应的 section 一定要是一个 app
 
-* 非最后一个名字对应的section一定要是一个filter
+* 非最后一个名字对应的 section 一定要是一个 filter
 
-设计这个V1版的API其实理念很简单，访问/v1的时候会去找app:apiv1app这个模块，这个模块的工厂函数又指向了v1.router.MyRouterApp.factory这个工厂函数。
+设计这个 V1 版的 API 其实理念很简单，访问/v1 的时候会去找 app:apiv1app 这个模块，这个模块的工厂函数又指向了 v1.router.MyRouterApp.factory 这个工厂函数。
 
 ### manage.py
 
 ```
-''''' 
+'''''
 Created on 2016-12-27
 
 @author: zhaozhilong
-'''  
+'''
 
 from wsgiref.simple_server import make_server
 import os
@@ -231,7 +233,7 @@ if __name__ == "__main__":
     # 把当前的模块导入系统库
     sys.path.append(path)
 
-    # 加载api的配置文件
+    # 加载 api 的配置文件
     app = loadapp('config:%s' % config_path)
 
     # 启动API程序
@@ -239,16 +241,16 @@ if __name__ == "__main__":
     server.serve_forever()
 ```
 
-这个主程序文件其实并没有什么大的变化。接下来我们就应该定义v1函数的路由函数了：
+这个主程序文件其实并没有什么大的变化。接下来我们就应该定义 v1 函数的路由函数了：
 
 ### 实现v1版本代码的路由功能
 
 #### router.py
 
-然后书写router.py的主代码：
+然后书写 router.py 的主代码：
 
 ```
-''''' 
+'''''
 Created on 2016-12-27
 
 @author: zhaozhilong
@@ -283,11 +285,11 @@ class MyRouterApp(wsgi.Router):
         super(MyRouterApp, self).__init__(mapper)
 ```
 
-我们这里定义了router的规则，设置了/test这个URL的匹配规则，我们在config.ini中匹配到v1之后，就会被转发到MyRouterApp,这个类中，然后在这里匹配到了二级URL ：/test，定义了当HTTP的方法为GET的时候去找Controller函数的test方法。
+我们这里定义了 router 的规则，设置了 /test 这个 URL 的匹配规则，我们在 config.ini 中匹配到 v1 之后，就会被转发到 MyRouterApp, 这个类中，然后在这里匹配到了二级 URL ：/test，定义了当 HTTP 的方法为 GET 的时候去找 Controller 函数的 test 方法。
 
 #### wsgi.py
 
-wsgi重在做路由，利用到了routes这个Python库。
+wsgi 重在做路由，利用到了 routes 这个 Python 库。
 
 ```
 import datetime
@@ -473,7 +475,7 @@ class Resource(object):
 ### 运行程序
 
 ```
-# python manage.py 
+# python manage.py
 Controller
 ShowVersion
 ```
@@ -487,5 +489,5 @@ ShowVersion
 
 ## 总结:
 
-总的来说paste的框架巨烦巨复杂，如果你对这个框架不熟悉用起来特别难上手。所以，社区后来的项目就慢慢进化到pecan这个框架上面了。本文的代码都被托管在了[ https://github.com/zhaozhilong1993/paste ](https://github.com/zhaozhilong1993/webdemo)上面了。可以下载下来好好分析。
+总的来说 paste 的框架巨烦巨复杂，如果你对这个框架不熟悉用起来特别难上手。所以，社区后来的项目就慢慢进化到 pecan 这个框架上面了。本文的代码都被托管在了[ https://github.com/zhaozhilong1993/paste ](https://github.com/zhaozhilong1993/webdemo)上面了。可以下载下来好好分析。
 
