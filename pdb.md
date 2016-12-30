@@ -135,4 +135,4 @@ $ python script.py 1 2
 ```
 最后，在代码的任何地方如果你想结束调试，可以使用“q”，那么正在执行的程序将会终止。
 
-更多内容可参考官方文档[https://docs.python.org/2/library/pdb.html](https://docs.python.org/2/library/pdb.html)。
+更多内容可参考官方文档 [https://docs.python.org/2/library/pdb.html](https://docs.python.org/2/library/pdb.html)。
